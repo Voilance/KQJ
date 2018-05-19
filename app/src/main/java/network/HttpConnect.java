@@ -12,10 +12,11 @@ import java.net.URL;
 
 public class HttpConnect {
 
-    public static void sendHttpRequest
-            (final String address,
-             final String method,
-             final HttpCallBackListener listener) {
+    public static void sendHttpRequest1 (
+            final String address,
+            final String method,
+            final HttpCallBackListener listener
+    ) {
 
         new Thread(new Runnable() {
             @Override
@@ -51,4 +52,9 @@ public class HttpConnect {
             }
         }).start();
     }
+
+//    public static void sendHttpRequest2 (
+//            String address,
+//            okhttp3.Callback callback
+//    )
 }
