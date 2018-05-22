@@ -4,10 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/login"
+    <EditText
+        android:id="@+id/login_account_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"/>
+        android:gravity="center"
+        android:hint="Account"
+        android:maxLines="1"/>
+
+    <EditText
+        android:id="@+id/login_password_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Password"
+        android:maxLines="1"/>
+
+    <Button
+        android:id="@+id/login_login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textAllCaps="false"/>
 
 </LinearLayout>
