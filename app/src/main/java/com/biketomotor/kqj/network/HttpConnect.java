@@ -1,4 +1,4 @@
-package network;
+package com.biketomotor.kqj.network;
 
 import org.json.JSONObject;
 
@@ -13,18 +13,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-/**
- * Created by Voilance on 2018/5/19.
- */
-
 public class HttpConnect {
 
-    public static void sendHttpRequest1 (
+    public static void sendHttpRequest(
             final String address,
             final String method,
-            final JSONObject jsonObject,
-            final HttpCallBackListener listener
-    ) {
+            final JSONObject jsonData,
+            final HttpCallBackListener listener) {
 
         new Thread(new Runnable() {
             @Override
@@ -38,21 +33,21 @@ public class HttpConnect {
                     connection.setReadTimeout(8000);
                     connection.setDoInput(true);
                     connection.setDoOutput(true);
-                    DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
-                    dataOutputStream.writeBytes(jsonObject.toString());
-                    InputStream inputStream = connection.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                    DataOutputStream ostream = new DataOutputStream(connection.getOutputStream());
+                    ostream.writeBytes(jsonData.toString());
+                    InputStream istream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(istream));
                     StringBuilder response = new StringBuilder();
                     String line;
-                    while ((line = bufferedReader.readLine()) != null) {
+                    while ((line = reader.readLine()) != null) {
                         response.append(line);
                     }
                     if (listener != null) {
-                        listener.onFinish(response.toString());
+                        listener.success(response.toString());
                     }
-                } catch (Exception excption) {
+                } catch (Exception exception) {
                     if (listener != null) {
-                        listener.onError(excption);
+                        listener.error(exception);
                     }
                 } finally {
                     if (connection != null) {
@@ -63,12 +58,12 @@ public class HttpConnect {
         }).start();
     }
 
-    public static void sendHttpRequest2 (
+    public static void sendOKHttpRequest (
             final String address,
             final String method,
             final RequestBody requestBody,
-            final okhttp3.Callback callback
-    ) {
+            final okhttp3.Callback callback) {
+
         OkHttpClient client = new OkHttpClient();
         Request request = null;
         switch (method) {
@@ -78,16 +73,10 @@ public class HttpConnect {
                         .put(requestBody)
                         .build();
                 break;
-            case "DELETE":
-                request = new Request.Builder()
-                        .url(address)
-                        .delete(requestBody)
-                        .build();
-                break;
             case "GET":
                 request = new Request.Builder()
                         .url(address)
-                        .get()
+                        .delete(requestBody)
                         .build();
                 break;
             case "POST":
