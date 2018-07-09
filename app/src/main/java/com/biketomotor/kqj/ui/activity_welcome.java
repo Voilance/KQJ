@@ -1,10 +1,12 @@
-package com.biketomotor.kqj;
+package com.biketomotor.kqj.ui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.biketomotor.kqj.R;
 
 public class activity_welcome extends AppCompatActivity implements View.OnClickListener {
 
