@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/layout_create_activity_edittext_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="活动名称"
+        android:minLines="1">
+    </EditText>
+
+    <EditText
+        android:id="@+id/layout_create_activity_edittext_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="时间：年"
+        android:minLines="1"/>
+
+    <EditText
+        android:id="@+id/layout_create_activity_edittext_month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="时间：月"
+        android:minLines="1"/>
+
+    <EditText
+        android:id="@+id/layout_create_activity_edittext_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="时间：日"
+        android:minLines="1"/>
+
+    <EditText
+        android:id="@+id/layout_create_activity_edittext_hour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="时间：时"
+        android:minLines="1"/>
+
+    <EditText
+        android:id="@+id/layout_create_activity_edittext_minute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="时间：分"
+        android:minLines="1"/>
+
+
+    <EditText
+        android:id="@+id/layout_create_activity_edittext_place"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="地点"
+        android:minLines="1"/>
+
+    <Button
+        android:id="@+id/layout_create_activity_button_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="创建"/>
+
+</LinearLayout>

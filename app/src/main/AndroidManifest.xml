@@ -26,7 +26,11 @@
         <activity android:name=".ui.activity_setting" />
         <activity android:name=".ui.activity_table" />
         <activity android:name=".ui.activity_activity1" />
-        <activity android:name=".ui.activity_activity2"></activity>
+        <activity android:name=".ui.activity_activity2" />
+        <activity android:name=".ui.activity_activity_info" />
+        <activity android:name=".ui.activity_create" />
+        <activity android:name=".ui.activity_check" />
+        <activity android:name=".ui.activity_invite"></activity>
     </application>
 
 </manifest>

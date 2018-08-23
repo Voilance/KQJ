@@ -20,4 +20,32 @@
         android:textAllCaps="false">
     </Button>
 
+    <Button
+        android:id="@+id/layout_welcome_button_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="首页"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/layout_welcome_button_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="创建活动"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/layout_welcome_button_check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="查看活动"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/layout_welcome_button_mycreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我创建的活动"
+        android:textAllCaps="false"/>
+
 </LinearLayout>

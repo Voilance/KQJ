@@ -4,8 +4,15 @@ public class User {
 
     private String account;
     private String password;
-    private String email;
-    private String name;
+    private String tel;
+    private String nickname;
+
+    public User(String account, String password, String tel, String nickname) {
+        setAccount(account);
+        setPassword(password);
+        setTel(tel);
+        setNickname(nickname);
+    }
 
     public String getAccount() {
         return account;
@@ -23,20 +30,20 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getTel() {
+        return tel;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setTel(String email) {
+        this.tel = email;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
 }

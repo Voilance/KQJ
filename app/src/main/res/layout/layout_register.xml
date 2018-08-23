@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:hint="手机号码"
+        android:hint="学号"
         android:minLines="1">
     </EditText>
 
@@ -41,11 +41,11 @@
     </EditText>
 
     <EditText
-        android:id="@+id/layout_register_edittext_email"
+        android:id="@+id/layout_register_edittext_tel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:hint="邮箱"
+        android:hint="手机号码"
         android:minLines="1">
     </EditText>
 

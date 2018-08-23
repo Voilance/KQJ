@@ -1,5 +1,7 @@
 package com.biketomotor.kqj.network;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -33,8 +35,12 @@ public class HttpConnect {
                     connection.setReadTimeout(8000);
                     connection.setDoInput(true);
                     connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    connection.setRequestProperty("Accept", "application/json");
+                    //connection.setRequestProperty("Accept-Charset", "UTF-8");
                     DataOutputStream ostream = new DataOutputStream(connection.getOutputStream());
-                    ostream.writeBytes(jsonData.toString());
+                    //ostream.writeBytes(jsonData.toString());
+                    ostream.write(jsonData.toString().getBytes());
                     InputStream istream = connection.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(istream));
                     StringBuilder response = new StringBuilder();
@@ -58,34 +64,34 @@ public class HttpConnect {
         }).start();
     }
 
-    public static void sendOKHttpRequest (
-            final String address,
-            final String method,
-            final RequestBody requestBody,
-            final okhttp3.Callback callback) {
-
-        OkHttpClient client = new OkHttpClient();
-        Request request = null;
-        switch (method) {
-            case "PUT":
-                request = new Request.Builder()
-                        .url(address)
-                        .put(requestBody)
-                        .build();
-                break;
-            case "GET":
-                request = new Request.Builder()
-                        .url(address)
-                        .delete(requestBody)
-                        .build();
-                break;
-            case "POST":
-                request = new Request.Builder()
-                        .url(address)
-                        .post(requestBody)
-                        .build();
-                break;
-        }
-        client.newCall(request).enqueue(callback);
-    }
+//    public static void sendOKHttpRequest (
+//            final String address,
+//            final String method,
+//            final RequestBody requestBody,
+//            final okhttp3.Callback callback) {
+//
+//        OkHttpClient client = new OkHttpClient();
+//        Request request = null;
+//        switch (method) {
+//            case "PUT":
+//                request = new Request.Builder()
+//                        .url(address)
+//                        .put(requestBody)
+//                        .build();
+//                break;
+//            case "GET":
+//                request = new Request.Builder()
+//                        .url(address)
+//                        .delete(requestBody)
+//                        .build();
+//                break;
+//            case "POST":
+//                request = new Request.Builder()
+//                        .url(address)
+//                        .post(requestBody)
+//                        .build();
+//                break;
+//        }
+//        client.newCall(request).enqueue(callback);
+//    }
 }
