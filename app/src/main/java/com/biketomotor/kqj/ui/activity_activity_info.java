@@ -27,6 +27,7 @@ public class activity_activity_info extends AppCompatActivity implements View.On
     private Button    button_sign;
     private Button    button_invite;
     private Button    button_delete;
+    private Button    button_participant;
     private TextView  textview_info;
     private String id;
     private String creater;
@@ -44,11 +45,13 @@ public class activity_activity_info extends AppCompatActivity implements View.On
         button_sign     = (Button)findViewById(R.id.layout_activity_info_sign);
         button_invite   = (Button)findViewById(R.id.layout_activity_info_invite);
         button_delete   = (Button)findViewById(R.id.layout_activity_info_delete);
+        button_participant = (Button)findViewById(R.id.layout_activity_info_participant);
         textview_info   = (TextView)findViewById(R.id.layout_activity_info_info);
 
         button_sign.setOnClickListener(this);
         button_delete.setOnClickListener(this);
         button_invite.setOnClickListener(this);
+        button_participant.setOnClickListener(this);
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -134,6 +137,21 @@ public class activity_activity_info extends AppCompatActivity implements View.On
                     }
                 });
                 break;
+            case R.id.layout_activity_info_participant:
+                String par_address = "http://biketomotor.cn:3000/api/ActivityParticipant";
+                JSONObject parJson = getParJson();
+                HttpConnect.sendHttpRequest(par_address, "POST", parJson, new HttpCallBackListener() {
+                    @Override
+                    public void success(String response) {
+                        catchParResponse(response);
+                    }
+
+                    @Override
+                    public void error(Exception exception) {
+                        exception.printStackTrace();
+                    }
+                });
+                break;
         }
     }
 
@@ -147,7 +165,7 @@ public class activity_activity_info extends AppCompatActivity implements View.On
         return json;
     }
 
-    private JSONObject getIvtJson() {
+    private JSONObject getParJson() {
         JSONObject json = new JSONObject();
         try {
             json.put("id", id);
@@ -155,5 +173,14 @@ public class activity_activity_info extends AppCompatActivity implements View.On
             e.printStackTrace();
         }
         return json;
+    }
+
+    private void catchParResponse(final String response) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(activity_activity_info.this, response, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
