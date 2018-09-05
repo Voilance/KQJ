@@ -59,6 +59,7 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
                 password = edittext_password.getText().toString();
                 JSONObject jsonData = getJson();
 
+                Toast.makeText(activity_login.this, jsonData.toString(), Toast.LENGTH_SHORT).show();
                 /* Use HttpUrlConnection */
                 HttpConnect.sendHttpRequest(address, "POST", jsonData, new HttpCallBackListener() {
                     @Override

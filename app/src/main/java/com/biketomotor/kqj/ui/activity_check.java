@@ -112,6 +112,7 @@ public class activity_check extends AppCompatActivity implements View.OnClickLis
             public void run() {
                 try {
                     JSONObject json = new JSONObject(response);
+                    Toast.makeText(activity_check.this, json.toString(), Toast.LENGTH_SHORT).show();
                     String result = json.getString("result");
                     String reason = json.getString("reason");
                     String acts = json.getString("activity");

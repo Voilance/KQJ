@@ -3,6 +3,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/layout_home_textview_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="info"/>
+
+        <TextView
+            android:id="@+id/layout_home_textview_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="passed"/>
+
+        <Button
+            android:id="@+id/layout_home_button_flesh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="刷新"/>
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/layout_home_linear_bottom"
