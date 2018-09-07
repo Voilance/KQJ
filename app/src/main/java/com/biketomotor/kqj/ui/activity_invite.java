@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.biketomotor.kqj.R;
 import com.biketomotor.kqj.network.HttpCallBackListener;
@@ -68,5 +69,21 @@ public class activity_invite extends AppCompatActivity implements View.OnClickLi
             e.printStackTrace();
         }
         return json;
+    }
+
+    private void catchResponse(final String response) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject json = new JSONObject(response);
+                    String result = json.getString("result");
+                    String reason = json.getString("reason");
+                    Toast.makeText(activity_invite.this, result + reason, Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

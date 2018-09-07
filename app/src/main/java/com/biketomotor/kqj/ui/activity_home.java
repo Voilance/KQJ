@@ -65,6 +65,7 @@ public class activity_home extends AppCompatActivity implements View.OnClickList
                 exception.printStackTrace();
             }
         });
+
     }
 
     @Override
@@ -78,6 +79,7 @@ public class activity_home extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void success(String response) {
 //                            Toast.makeText(activity_home.this, "已更新", Toast.LENGTH_SHORT).show();
+                            catchResponse(response);
                         }
 
                         @Override
@@ -145,9 +147,10 @@ public class activity_home extends AppCompatActivity implements View.OnClickList
                     String reason = json.getString("reason");
                     id = json.getString("id");
                     act_name = json.getString("name");
-                    long time = Integer.parseInt(json.getString("time"));
                     textview_info.setText(act_name);
-                    if (time <= curtime) {
+                    String strtime = json.getString("time");
+                    long acttime = Long.valueOf(strtime);
+                    if (acttime >= curtime) {
                         ok = true;
                         textview_result.setText("点击签到");
                         button_flesh.setText("签到");
