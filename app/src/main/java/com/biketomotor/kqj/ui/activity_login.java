@@ -11,7 +11,11 @@ import android.widget.Toast;
 import com.biketomotor.kqj.R;
 import com.biketomotor.kqj.network.HttpCallBackListener;
 import com.biketomotor.kqj.network.HttpConnect;
+import com.biketomotor.kqj.network.HttpsCallBackListener;
+import com.biketomotor.kqj.network.HttpsConnect;
+import com.biketomotor.kqj.network.HttpsTrustManager;
 import com.biketomotor.kqj.object.Cur;
+import com.biketomotor.kqj.object.NetCode;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -26,6 +30,8 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import javax.net.ssl.HttpsURLConnection;
+
 public class activity_login extends AppCompatActivity implements View.OnClickListener {
 
     private EditText edittext_accout;
@@ -35,7 +41,7 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
 
     private String account;
     private String password;
-    private final String address = "http://biketomotor.cn:3000/api/UserSignIn";
+    private final String address = "https://app.biketomotor.cn/api/UserSignIn";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +67,8 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
 
                 Toast.makeText(activity_login.this, jsonData.toString(), Toast.LENGTH_SHORT).show();
                 /* Use HttpUrlConnection */
-                HttpConnect.sendHttpRequest(address, "POST", jsonData, new HttpCallBackListener() {
+//                HttpsTrustManager.allowAllSSL();
+                HttpsConnect.sendHttpsRequest(address, "POST", jsonData, new HttpsCallBackListener() {
                     @Override
                     public void success(String response) {
                         catchResponse(response);
@@ -102,9 +109,6 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
                     if (result.compareTo("true") == 0) {
                         Cur.setAccount(account);
                         Toast.makeText(activity_login.this, reason, Toast.LENGTH_SHORT).show();
-//                        Intent to_home = new Intent(activity_login.this, activity_home.class);
-//                        startActivity(to_home);
-//                        finish();
                     } else {
                         Toast.makeText(activity_login.this, reason, Toast.LENGTH_SHORT).show();
                     }

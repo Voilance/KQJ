@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.biketomotor.kqj.R;
 import com.biketomotor.kqj.network.HttpCallBackListener;
 import com.biketomotor.kqj.network.HttpConnect;
+import com.biketomotor.kqj.network.HttpsCallBackListener;
+import com.biketomotor.kqj.network.HttpsConnect;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +25,7 @@ public class activity_invite extends AppCompatActivity implements View.OnClickLi
     private Button bt_invite;
     private String account;
     private String id;
-    private String address = "http://biketomotor.cn:3000/api/InviteUser";
+    private String address = "https://app.biketomotor.cn/api/InviteUser";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class activity_invite extends AppCompatActivity implements View.OnClickLi
             case R.id.layout_invite_invite:
                 account = et_account.getText().toString();
                 JSONObject jsonData = getJson();
-                HttpConnect.sendHttpRequest(address, "POST", jsonData, new HttpCallBackListener() {
+                HttpsConnect.sendHttpsRequest(address, "POST", jsonData, new HttpsCallBackListener() {
                     @Override
                     public void success(String response) {
                         finish();

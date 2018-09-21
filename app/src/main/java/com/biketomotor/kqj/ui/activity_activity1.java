@@ -30,7 +30,7 @@ public class activity_activity1 extends AppCompatActivity implements View.OnClic
     private Button button2;
     private Button button3;
     private Button button4;
-    private String address = "http://biketomotor.cn:3000/api/GetParticipantActivity";
+    private String address = "https://app.biketomotor.cn/api/GetParticipantActivity";
 
     private List<Activity> activityList = new ArrayList<>();
 

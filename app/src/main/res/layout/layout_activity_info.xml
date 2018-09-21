@@ -41,6 +41,12 @@
         android:text="邀请"/>
 
     <Button
+        android:id="@+id/layout_activity_info_change"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="修改活动"/>
+
+    <Button
         android:id="@+id/layout_activity_info_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -5,6 +5,7 @@ import android.os.TestLooperManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewDebug;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import com.biketomotor.kqj.R;
 import com.biketomotor.kqj.network.HttpCallBackListener;
 import com.biketomotor.kqj.network.HttpConnect;
+import com.biketomotor.kqj.network.HttpsCallBackListener;
+import com.biketomotor.kqj.network.HttpsConnect;
 import com.biketomotor.kqj.object.Cur;
 
 import org.json.JSONException;
@@ -26,12 +29,16 @@ public class activity_activity_info extends AppCompatActivity implements View.On
     private TextView  textview_place;
     private Button    button_sign;
     private Button    button_invite;
+    private Button    button_change;
     private Button    button_delete;
     private Button    button_participant;
     private TextView  textview_info;
     private String id;
     private String creater;
-    private String address ="http://biketomotor.cn:3000/api/GetActivityDetails";
+    private String name;
+    private String time;
+    private String place;
+    private String address ="https://app.biketomotor.cn/api/GetActivityDetails";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +51,15 @@ public class activity_activity_info extends AppCompatActivity implements View.On
         textview_place  = (TextView)findViewById(R.id.layout_activity_info_place);
         button_sign     = (Button)findViewById(R.id.layout_activity_info_sign);
         button_invite   = (Button)findViewById(R.id.layout_activity_info_invite);
+        button_change   = (Button)findViewById(R.id.layout_activity_info_change);
         button_delete   = (Button)findViewById(R.id.layout_activity_info_delete);
         button_participant = (Button)findViewById(R.id.layout_activity_info_participant);
         textview_info   = (TextView)findViewById(R.id.layout_activity_info_info);
 
         button_sign.setOnClickListener(this);
-        button_delete.setOnClickListener(this);
         button_invite.setOnClickListener(this);
+        button_change.setOnClickListener(this);
+        button_delete.setOnClickListener(this);
         button_participant.setOnClickListener(this);
 
         Intent intent = getIntent();
@@ -59,10 +68,11 @@ public class activity_activity_info extends AppCompatActivity implements View.On
         if (creater.compareTo(Cur.getAccount().toString()) != 0) {
             button_delete.setVisibility(View.GONE);
             button_invite.setVisibility(View.GONE);
+            button_change.setVisibility(View.GONE);
         }
 
         JSONObject jsonData = getJson();
-        HttpConnect.sendHttpRequest(address, "POST", jsonData, new HttpCallBackListener() {
+        HttpsConnect.sendHttpsRequest(address, "POST", jsonData, new HttpsCallBackListener() {
             @Override
             public void success(String response) {
                 catchResponse(response);
@@ -94,9 +104,9 @@ public class activity_activity_info extends AppCompatActivity implements View.On
                     String result = json.getString("result");
                     String reason = json.getString("reason");
                     if (result.compareTo("true") == 0) {
-                        String name = json.getString("activity_name");
-                        String time = json.getString("activity_time");
-                        String place = json.getString("activity_place");
+                        name = json.getString("activity_name");
+                        time = json.getString("activity_time");
+                        place = json.getString("activity_place");
                         String creater = json.getString("creater");
                         textview_name.setText(name);
                         textview_time.setText(time);
@@ -122,10 +132,18 @@ public class activity_activity_info extends AppCompatActivity implements View.On
                 to_invite.putExtra("id", id);
                 startActivity(to_invite);
                 break;
+            case R.id.layout_activity_info_change:
+                Intent to_info_change = new Intent(activity_activity_info.this, activity_info_change.class);
+                to_info_change.putExtra("id", id);
+                to_info_change.putExtra("name", name);
+                to_info_change.putExtra("time", time);
+                to_info_change.putExtra("place", place);
+                startActivity(to_info_change);
+                break;
             case R.id.layout_activity_info_delete:
-                String del_address = "http://biketomotor.cn:3000/api/DeleteActivity";
+                final String del_address = "https://app.biketomotor.cn/api/DeleteActivity";
                 JSONObject delJson = getDelJson();
-                HttpConnect.sendHttpRequest(del_address, "POST", delJson, new HttpCallBackListener() {
+                HttpsConnect.sendHttpsRequest(del_address, "POST", delJson, new HttpsCallBackListener() {
                     @Override
                     public void success(String response) {
                         finish();
@@ -138,9 +156,9 @@ public class activity_activity_info extends AppCompatActivity implements View.On
                 });
                 break;
             case R.id.layout_activity_info_participant:
-                String par_address = "http://biketomotor.cn:3000/api/ActivityParticipant";
+                final String par_address = "https://app.biketomotor.cn/api/ActivityParticipant";
                 JSONObject parJson = getParJson();
-                HttpConnect.sendHttpRequest(par_address, "POST", parJson, new HttpCallBackListener() {
+                HttpsConnect.sendHttpsRequest(par_address, "POST", parJson, new HttpsCallBackListener() {
                     @Override
                     public void success(String response) {
                         catchParResponse(response);

@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.biketomotor.kqj.R;
 import com.biketomotor.kqj.network.HttpCallBackListener;
 import com.biketomotor.kqj.network.HttpConnect;
+import com.biketomotor.kqj.network.HttpsCallBackListener;
+import com.biketomotor.kqj.network.HttpsConnect;
 import com.biketomotor.kqj.object.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -42,8 +44,7 @@ public class activity_register extends AppCompatActivity implements View.OnClick
 
     private User user;
     private Gson gson;
-    private final String address = "http://biketomotor.cn:3000/api/UserSignUp";
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private final String address = "https://app.biketomotor.cn/api/UserSignUp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class activity_register extends AppCompatActivity implements View.OnClick
                     JSONObject jsonData = getJson();
 
                     /* Use HttpUrlConnection */
-                    HttpConnect.sendHttpRequest(address, "POST", jsonData, new HttpCallBackListener() {
+                    HttpsConnect.sendHttpsRequest(address, "POST", jsonData, new HttpsCallBackListener() {
                         @Override
                         public void success(String response) {
                             catchResponse(response);
@@ -121,9 +122,6 @@ public class activity_register extends AppCompatActivity implements View.OnClick
                     String reason = jsonData.getString("reason");
                     if (result.compareTo("true") == 0) {
                         Toast.makeText(activity_register.this, reason, Toast.LENGTH_SHORT).show();
-//                        Intent to_login = new Intent(activity_register.this, activity_login.class);
-//                        startActivity(to_login);
-//                        finish();
                     } else {
                         Toast.makeText(activity_register.this, reason, Toast.LENGTH_SHORT).show();
                     }

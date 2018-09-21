@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.biketomotor.kqj.R;
 import com.biketomotor.kqj.network.HttpCallBackListener;
 import com.biketomotor.kqj.network.HttpConnect;
+import com.biketomotor.kqj.network.HttpsCallBackListener;
+import com.biketomotor.kqj.network.HttpsConnect;
 import com.biketomotor.kqj.object.Cur;
 
 import org.json.JSONException;
@@ -26,8 +28,8 @@ public class activity_home extends AppCompatActivity implements View.OnClickList
     private Button button3;
     private Button button4;
 
-    private final String address = "http://biketomotor.cn:3000/api/UrgentActivity";
-    private final String readdress = "http://biketomotor.cn:3000/api/ActivityPassed";
+    private final String address = "https://app.biketomotor.cn/api/UrgentActivity";
+    private final String readdress = "https://app.biketomotor.cn/api/ActivityPassed";
     private long curtime = System.currentTimeMillis();
     private String id;
     private String act_name;
@@ -54,7 +56,7 @@ public class activity_home extends AppCompatActivity implements View.OnClickList
 
         JSONObject jsonData = getJson();
 
-        HttpConnect.sendHttpRequest(address, "POST", jsonData, new HttpCallBackListener() {
+        HttpsConnect.sendHttpsRequest(address, "POST", jsonData, new HttpsCallBackListener() {
             @Override
             public void success(String response) {
                 catchResponse(response);
@@ -75,7 +77,7 @@ public class activity_home extends AppCompatActivity implements View.OnClickList
                 if (ok) {
                     ;
                 } else {
-                    HttpConnect.sendHttpRequest(readdress, "POST", getReJson(), new HttpCallBackListener() {
+                    HttpsConnect.sendHttpsRequest(readdress, "POST", getReJson(), new HttpsCallBackListener() {
                         @Override
                         public void success(String response) {
 //                            Toast.makeText(activity_home.this, "已更新", Toast.LENGTH_SHORT).show();
@@ -87,7 +89,7 @@ public class activity_home extends AppCompatActivity implements View.OnClickList
                             exception.printStackTrace();
                         }
                     });
-                    HttpConnect.sendHttpRequest(address, "POST", getJson(), new HttpCallBackListener() {
+                    HttpsConnect.sendHttpsRequest(address, "POST", getJson(), new HttpsCallBackListener() {
                         @Override
                         public void success(String response) {
                             catchResponse(response);

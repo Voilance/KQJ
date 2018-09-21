@@ -30,7 +30,8 @@
         <activity android:name=".ui.activity_activity_info" />
         <activity android:name=".ui.activity_create" />
         <activity android:name=".ui.activity_check" />
-        <activity android:name=".ui.activity_invite"></activity>
+        <activity android:name=".ui.activity_invite" />
+        <activity android:name=".ui.activity_info_change"></activity>
     </application>
 
 </manifest>

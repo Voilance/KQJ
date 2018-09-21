@@ -12,6 +12,8 @@ import com.biketomotor.kqj.R;
 import com.biketomotor.kqj.adapter.ActivityAdapter;
 import com.biketomotor.kqj.network.HttpCallBackListener;
 import com.biketomotor.kqj.network.HttpConnect;
+import com.biketomotor.kqj.network.HttpsCallBackListener;
+import com.biketomotor.kqj.network.HttpsConnect;
 import com.biketomotor.kqj.object.Activity;
 import com.biketomotor.kqj.object.Cur;
 
@@ -28,7 +30,7 @@ public class activity_check extends AppCompatActivity implements View.OnClickLis
     private Button button2;
     private Button button3;
     private Button button4;
-    private String address = "http://biketomotor.cn:3000/api/GetParticipantActivity";
+    private String address = "https://app.biketomotor.cn/api/GetParticipantActivity";
 
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
@@ -50,24 +52,12 @@ public class activity_check extends AppCompatActivity implements View.OnClickLis
         button3.setOnClickListener(this);
         button4.setOnClickListener(this);
 
-//        activityList.add(new Activity(R.drawable.ua, "A activity", "aaaa"));
-//        activityList.add(new Activity(R.drawable.ub, "B activity", "bbbb"));
-//        activityList.add(new Activity(R.drawable.uc, "C activity", "cccc"));
-//        activityList.add(new Activity(R.drawable.ud, "D activity", "dddd"));
-//        activityList.add(new Activity(R.drawable.ue, "E activity", "eeee"));
-//        activityList.add(new Activity(R.drawable.uf, "F activity", "ffff"));
-//        activityList.add(new Activity(R.drawable.ug, "G activity", "gggg"));
-//        activityList.add(new Activity(R.drawable.uh, "H activity", "hhhh"));
-//        activityList.add(new Activity(R.drawable.ui, "I activity", "iiii"));
-//
         recyclerView = (RecyclerView)findViewById(R.id.layout_check_recyclerview);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-//        ActivityAdapter adapter = new ActivityAdapter(activityList);
-//        recyclerView.setAdapter(adapter);
 
         JSONObject jsonData = getJson();
-        HttpConnect.sendHttpRequest(address, "POST", jsonData, new HttpCallBackListener() {
+        HttpsConnect.sendHttpsRequest(address, "POST", jsonData, new HttpsCallBackListener() {
             @Override
             public void success(String response) {
                 catchResponse(response);

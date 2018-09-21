@@ -14,6 +14,8 @@ import com.biketomotor.kqj.R;
 import com.biketomotor.kqj.adapter.ActivityAdapter;
 import com.biketomotor.kqj.network.HttpCallBackListener;
 import com.biketomotor.kqj.network.HttpConnect;
+import com.biketomotor.kqj.network.HttpsCallBackListener;
+import com.biketomotor.kqj.network.HttpsConnect;
 import com.biketomotor.kqj.object.Activity;
 import com.biketomotor.kqj.object.Cur;
 
@@ -26,7 +28,7 @@ import java.util.List;
 
 public class activity_activity2 extends AppCompatActivity implements View.OnClickListener {
 
-    private String address = "http://biketomotor.cn:3000/api/GetCreateActivity";
+    private String address = "https://app.biketomotor.cn/api/GetCreateActivity";
 
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
@@ -42,7 +44,7 @@ public class activity_activity2 extends AppCompatActivity implements View.OnClic
         recyclerView.setLayoutManager(layoutManager);
 
         JSONObject jsonData = getJson();
-        HttpConnect.sendHttpRequest(address, "POST", jsonData, new HttpCallBackListener() {
+        HttpsConnect.sendHttpsRequest(address, "POST", jsonData, new HttpsCallBackListener() {
             @Override
             public void success(String response) {
                 catchResponse(response);
