@@ -3,4 +3,18 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorCursor">#cccccc</color>
+
+    <!-- activity_login -->
+    <color name="loginLayoutBackground">#F7F7F7</color>
+    <color name="appTitle">#000</color>
+    <color name="loginButtonBackground">#004684</color>
+    <color name="loginButtonText">#fff</color>
+    <color name="forgetPassword">#579CCF</color>
+    <color name="register">#579CCF</color>
+
+    <!-- activity_register -->
+    <color name="registerButtonBackground">#004684</color>
+    <color name="registerButtonText">#fff</color>
+
 </resources>

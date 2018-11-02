@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_friends"
+        android:icon="@mipmap/ic_activities"
+        android:title="通讯录"/>
+
+    <item
+        android:id="@+id/item_schedule"
+        android:icon="@mipmap/ic_schedule"
+        android:title="课程表"/>
+
+    <item
+        android:id="@+id/item_signin"
+        android:icon="@mipmap/ic_signin"
+        android:title="签到"/>
+
+    <item
+        android:id="@+id/item_activities"
+        android:icon="@mipmap/ic_activities"
+        android:title="活动"/>
+
+    <item
+        android:id="@+id/item_mine"
+        android:icon="@mipmap/ic_mine"
+        android:title="我的"/>
+
+</menu>
