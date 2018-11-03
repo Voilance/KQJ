@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorCursor">#cccccc</color>
+    <color name="titleBar">#2A3895</color>
 
     <!-- activity_login -->
     <color name="loginLayoutBackground">#F7F7F7</color>

@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/item_friends"
-        android:icon="@mipmap/ic_activities"
+        android:icon="@mipmap/ic_friends"
         android:title="通讯录"/>
 
     <item

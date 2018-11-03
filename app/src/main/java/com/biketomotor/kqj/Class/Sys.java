@@ -26,13 +26,13 @@ public class Sys {
 
     public static void readSP(SharedPreferences sp) {
         Sys.account = sp.getString("account", "");
-        Sys.login = sp.getBoolean("activity_login", false);
+        Sys.login = sp.getBoolean("login", false);
     }
 
     public static void writeSP(SharedPreferences sp) {
         Sys.editor = sp.edit();
         Sys.editor.putString("account", User.getAccount());
-        Sys.editor.putBoolean("activity_login", Sys.login);
+        Sys.editor.putBoolean("login", Sys.login);
         Sys.editor.commit();
         Sys.editor = null;
     }

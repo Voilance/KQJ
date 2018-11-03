@@ -30,7 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_app_title"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="40dp"
+        android:background="#ffffff">
 
         <ImageView
             android:id="@+id/iv_account"
@@ -61,7 +62,7 @@
             android:ems="19"
             android:hint="  账号"
             android:textColorHint="@color/colorCursor"
-            android:textCursorDrawable="@color/colorCursor"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="15sp"/>
 
         <ImageView
@@ -80,7 +81,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_account"
-        android:layout_marginTop="1dp">
+        android:layout_marginTop="1dp"
+        android:background="#ffffff">
 
         <ImageView
             android:id="@+id/iv_password"
@@ -111,7 +113,7 @@
             android:ems="19"
             android:hint="  密码"
             android:textColorHint="@color/colorCursor"
-            android:textCursorDrawable="@color/colorCursor"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="15sp"/>
 
         <ImageView

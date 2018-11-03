@@ -13,12 +13,12 @@ public class User {
     private static String password = "";
     private static String nickname = "";
     private static String realname = "";
-    private static String token = "";
+    private static String tel = "";
     private static boolean online = false;
     private static SharedPreferences.Editor editor = null;
 
     public static String getAccount() {
-        return account;
+        return User.account;
     }
 
     public static void setAccount(String account) {
@@ -26,7 +26,7 @@ public class User {
     }
 
     public static String getPassword() {
-        return password;
+        return User.password;
     }
 
     public static void setPassword(String password) {
@@ -34,7 +34,7 @@ public class User {
     }
 
     public static String getNickname() {
-        return nickname;
+        return User.nickname;
     }
 
     public static void setNickname(String nickname) {
@@ -42,23 +42,23 @@ public class User {
     }
 
     public static String getRealname() {
-        return realname;
+        return User.realname;
     }
 
     public static void setRealname(String realname) {
         User.realname = realname;
     }
 
-    public static String getToken() {
-        return token;
+    public static String getTel() {
+        return User.tel;
     }
 
-    public static void setToken(String token) {
-        User.token = token;
+    public static void setTel(String token) {
+        User.tel = token;
     }
 
     public static boolean isOnline() {
-        return online;
+        return User.online;
     }
 
     public static void setOnline(boolean online) {
@@ -70,7 +70,7 @@ public class User {
         User.password = sp.getString("password", "");
         User.nickname = sp.getString("nickname", "");
         User.realname = sp.getString("realname", "");
-        User.token = sp.getString("token", null);
+        User.tel = sp.getString("tel", null);
     }
 
     public static void writeSP(SharedPreferences sp) {
@@ -79,7 +79,7 @@ public class User {
         User.editor.putString("password", User.password);
         User.editor.putString("nickname", User.nickname);
         User.editor.putString("realname", User.realname);
-        User.editor.putString("token", User.token);
+        User.editor.putString("tel", User.tel);
         User.editor.commit();
         User.editor = null;
     }
@@ -90,7 +90,7 @@ public class User {
             User.password = data.getString("password");
             User.nickname = data.getString("nickname");
             User.realname = data.getString("realname");
-            User.token = data.getString("token");
+            User.tel = data.getString("telnumber");
         } catch (JSONException e) {
             Log.e(TAG, "readJSON:" + e.toString());
         }

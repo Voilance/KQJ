@@ -2,12 +2,89 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/loginLayoutBackground">
 
-    <TextView
+    <RelativeLayout
+        android:id="@+id/rl_avatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="我的"/>
+        android:layout_marginTop="20dp"
+        android:background="#ffffff">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/app_icon"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/avatar">
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="Nickname"
+                android:gravity="center_vertical"
+                android:textSize="20sp"
+                android:textColor="#000"/>
+
+            <TextView
+                android:id="@+id/tv_account"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/tv_nickname"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="account"
+                android:gravity="center_vertical"
+                android:textSize="18dp"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_avatar"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff">
+
+        <ImageView
+            android:id="@+id/iv_setting"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/ic_settings"
+            android:background="#4d92c8"/>
+
+        <TextView
+            android:id="@+id/tv_setting"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_setting"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            android:text="设置"
+            android:textSize="20sp"
+            android:textColor="#000"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>
