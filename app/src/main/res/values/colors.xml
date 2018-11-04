@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorCursor">#cccccc</color>
     <color name="titleBar">#2A3895</color>
+    <color name="ietIcon">#008B7D</color>
+
 
     <!-- activity_login -->
     <color name="loginLayoutBackground">#F7F7F7</color>

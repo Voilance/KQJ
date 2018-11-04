@@ -258,7 +258,7 @@ public class MainActivity
                 toast("添加课程");
                 break;
             case 3:
-                toast("创建活动");
+                CreateActivity.actionActivity(MainActivity.this);
                 break;
             default:
                 break;
