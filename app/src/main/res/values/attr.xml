@@ -8,6 +8,7 @@
         <attr name="textColor" format="color|reference"/>
         <attr name="hintColor" format="color|reference"/>
         <attr name="inputEnabled" format="boolean"/>
+        <attr name="textColorDrawable" format="reference"/>
     </declare-styleable>
 
 </resources>
