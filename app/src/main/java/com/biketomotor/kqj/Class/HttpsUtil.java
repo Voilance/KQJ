@@ -13,8 +13,10 @@ public class HttpsUtil {
 
     public static final String loginAddress = "https://app.biketomotor.cn/api/UserSignIn";
     public static final String registerAddress = "https://app.biketomotor.cn/api/UserSignUp";
-    public static final String getParticipantActivityAddress = "https://app.biketomotor.cn/api/GetParticipantActivity";
+    public static final String participantActivityAddress = "https://app.biketomotor.cn/api/GetParticipantActivity";
     public static final String createActivityAddress = "https://app.biketomotor.cn/api/CreateActivity";
+    public static final String activityInfoAddress = "https://app.biketomotor.cn/api/GetActivityDetails";
+    public static final String urgentActivityAddress = "https://app.biketomotor.cn/api/UrgentActivity";
 
     public static void sendPostRequest(
             final String address,

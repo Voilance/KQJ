@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activity.MainActivity"
-            android:label="Welcome!"
+            android:label="智能课堂签到"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,6 +36,8 @@
         <activity
             android:name=".Activity.CreateActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".Activity.ActivityInfo" />
+        <activity android:name=".Activity.UserInfo"></activity>
     </application>
 
 </manifest>

@@ -211,7 +211,7 @@ public class MainActivity
 
     public void editTitleNumber(int number) {
         if (number > 0) {
-            tvTitleNumber.setText("今日待签(" + String.valueOf(number) +")");
+            tvTitleNumber.setText("待签(" + String.valueOf(number) +")");
         } else {
             tvTitleNumber.setText("今日无签");
         }

@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.biketomotor.kqj.Class.ActivityManager;
+import com.biketomotor.kqj.Class.ActivityMgr;
 import com.biketomotor.kqj.Class.HttpsUtil;
 import com.biketomotor.kqj.Class.Sys;
 import com.biketomotor.kqj.Class.User;
@@ -64,41 +64,7 @@ public class LoginActivity
         switch (v.getId()) {
             case R.id.bt_login:
                 if (isInfoValid()) {
-                    HttpsUtil.sendPostRequest(HttpsUtil.loginAddress, getJsonData(), new HttpsListener() {
-                        @Override
-                        public void onSuccess(final String response) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        JSONObject data = new JSONObject(response);
-                                        String result = data.getString("result");
-                                        String reason = data.getString("reason");
-                                        // 如果登陆成功，则利用后端返回的信息（包括用户所有的基本信息）修改User
-                                        if (result.equals("true")) {
-//                                            User.readJSON(data);
-                                            User.setAccount(account);
-                                            User.setPassword(password);
-                                            User.setOnline(true);
-                                            User.writeSP(getSharedPreferences(User.getAccount(), Context.MODE_PRIVATE));
-                                            Sys.setLogin(true);
-                                            Sys.writeSP(getSharedPreferences("user", Context.MODE_PRIVATE));
-                                            finish();
-                                        } else {
-                                            toast(reason);
-                                        }
-                                    } catch (JSONException e) {
-                                        Log.e(TAG, "activity_login/onSuccess:" + e.toString());
-                                    }
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onFailure(Exception exception) {
-                            Log.e(TAG, "activity_login/onFailure:" + exception.toString());
-                        }
-                    });
+                    onLogin();
                 }
                 break;
             case R.id.tv_forget_password:
@@ -135,6 +101,44 @@ public class LoginActivity
         return true;
     }
 
+    private void onLogin() {
+        HttpsUtil.sendPostRequest(HttpsUtil.loginAddress, getJsonData(), new HttpsListener() {
+            @Override
+            public void onSuccess(final String response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject data = new JSONObject(response);
+                            String result = data.getString("result");
+                            String reason = data.getString("reason");
+                            // 如果登陆成功，则利用后端返回的信息（包括用户所有的基本信息）修改User
+                            if (result.equals("true")) {
+//                                            User.readJSON(data);
+                                User.setAccount(account);
+                                User.setPassword(password);
+                                User.setOnline(true);
+                                User.writeSP(getSharedPreferences(User.getAccount(), Context.MODE_PRIVATE));
+                                Sys.setLogin(true);
+                                Sys.writeSP(getSharedPreferences("user", Context.MODE_PRIVATE));
+                                finish();
+                            } else {
+                                toast(reason);
+                            }
+                        } catch (JSONException e) {
+                            Log.e(TAG, "activity_login/onSuccess:" + e.toString());
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                Log.e(TAG, "activity_login/onFailure:" + exception.toString());
+            }
+        });
+    }
+
     private JSONObject getJsonData() {
         JSONObject data = new JSONObject();
         try {
@@ -150,7 +154,7 @@ public class LoginActivity
     public void onBackPressed() {
         super.onBackPressed();
         if (!User.isOnline()) {
-            ActivityManager.finishAllActivities();
+            ActivityMgr.finishAllActivities();
         }
     }
 

@@ -61,50 +61,12 @@ public class RegisterActivity
         btRegister.setOnClickListener(this);
     }
 
-    public static void actionActivity(Context context) {
-        context.startActivity(new Intent(context, RegisterActivity.class));
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_register:
                 if (isInfoValid()) {
-                    HttpsUtil.sendPostRequest(HttpsUtil.registerAddress, getJsonData(), new HttpsListener() {
-                        @Override
-                        public void onSuccess(final String response) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        JSONObject data = new JSONObject(response);
-                                        String result = data.getString("result");
-                                        String reason = data.getString("reason");
-                                        if (result.equals("true")) {
-                                            User.setAccount(account);
-                                            User.setPassword(password);
-                                            User.setNickname(nickname);
-                                            User.setRealname(realname);
-                                            User.setTel(tel);
-                                            User.writeSP(getSharedPreferences(User.getAccount(), Context.MODE_PRIVATE));
-                                            Sys.setLogin(false);
-                                            Sys.writeSP(getSharedPreferences("user", Context.MODE_PRIVATE));
-                                            finish();
-                                        } else {
-                                            toast(reason);
-                                        }
-                                    } catch (JSONException e) {
-                                        Log.e(TAG, "onSuccess:" + e.toString());
-                                    }
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onFailure(Exception exception) {
-                            Log.e(TAG, "onFailure:" + exception.toString());
-                        }
-                    });
+                    onRegister();
                 }
                 break;
             default:
@@ -180,6 +142,44 @@ public class RegisterActivity
         return true;
     }
 
+    private void onRegister() {
+        HttpsUtil.sendPostRequest(HttpsUtil.registerAddress, getJsonData(), new HttpsListener() {
+            @Override
+            public void onSuccess(final String response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject data = new JSONObject(response);
+                            String result = data.getString("result");
+                            String reason = data.getString("reason");
+                            if (result.equals("true")) {
+                                User.setAccount(account);
+                                User.setPassword(password);
+                                User.setNickname(nickname);
+                                User.setRealname(realname);
+                                User.setTel(tel);
+                                User.writeSP(getSharedPreferences(User.getAccount(), Context.MODE_PRIVATE));
+                                Sys.setLogin(false);
+                                Sys.writeSP(getSharedPreferences("user", Context.MODE_PRIVATE));
+                                finish();
+                            } else {
+                                toast(reason);
+                            }
+                        } catch (JSONException e) {
+                            Log.e(TAG, "onSuccess:" + e.toString());
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                Log.e(TAG, "onFailure:" + exception.toString());
+            }
+        });
+    }
+
     private JSONObject getJsonData() {
         JSONObject data = new JSONObject();
         try {
@@ -192,5 +192,9 @@ public class RegisterActivity
             Log.e(TAG, "getJsonData:" + e.toString());
         }
         return data;
+    }
+
+    public static void actionActivity(Context context) {
+        context.startActivity(new Intent(context, RegisterActivity.class));
     }
 }

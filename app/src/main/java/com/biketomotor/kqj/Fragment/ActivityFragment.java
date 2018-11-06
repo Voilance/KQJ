@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.biketomotor.kqj.Activity.ActivityInfo;
 import com.biketomotor.kqj.Activity.MainActivity;
 import com.biketomotor.kqj.Adapter.ActivityItemAdapter;
 import com.biketomotor.kqj.Class.ActivityItem;
@@ -24,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ActivityFragment
@@ -47,8 +49,7 @@ public class ActivityFragment
         activityItemAdapter.setItemClickListener(new ActivityItemAdapter.onItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                ActivityItem activityItem = activityItemList.get(position);
-                Toast.makeText(getContext(), activityItem.getName(), Toast.LENGTH_SHORT).show();
+                ActivityInfo.actionActivity(getContext(), activityItemList.get(position).getId());
             }
         });
         recyclerView.setAdapter(activityItemAdapter);
@@ -64,7 +65,7 @@ public class ActivityFragment
     }
 
     private void getParticipantActivity() {
-        HttpsUtil.sendPostRequest(HttpsUtil.getParticipantActivityAddress, getJsonData(), new HttpsListener() {
+        HttpsUtil.sendPostRequest(HttpsUtil.participantActivityAddress, getJsonData(), new HttpsListener() {
             @Override
             public void onSuccess(final String response) {
                 mainActivity.runOnUiThread(new Runnable() {
@@ -82,11 +83,14 @@ public class ActivityFragment
                                     String name = object.getString("activity_name");
                                     String id = object.getString("activity_id");
                                     String creater = object.getString("creater");
-                                    activityItemList.add(new ActivityItem(name, id, creater));
+                                    String startTime = object.getString("activity_time");
+                                    String endTime = object.getString("activity_endTime");
+                                    activityItemList.add(new ActivityItem(name, id, creater, startTime, endTime));
                                 }
                             } else {
 //                                Toast.makeText(getContext(), reason, Toast.LENGTH_SHORT).show();
                             }
+                            Collections.sort(activityItemList);
                             activityItemAdapter.notifyDataSetChanged();
                             mainActivity.editTitleNumber(activityItemAdapter.getItemCount());
                         } catch (JSONException e) {

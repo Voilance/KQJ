@@ -6,26 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.biketomotor.kqj.Class.ActivityItem;
+import com.biketomotor.kqj.Class.UserItem;
 import com.biketomotor.kqj.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-public class ActivityItemAdapter
-        extends RecyclerView.Adapter<ActivityItemAdapter.ViewHolder> {
+public class UserItemAdapter
+        extends RecyclerView.Adapter<UserItemAdapter.ViewHolder> {
 
     class ViewHolder
             extends RecyclerView.ViewHolder {
 
         private TextView tvName;
-        private TextView tvTime;
+        private TextView tvStatus;
 
         ViewHolder(View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tv_activity_name);
-            tvTime = itemView.findViewById(R.id.tv_activity_time);
+            tvName = itemView.findViewById(R.id.tv_user_name);
+            tvStatus = itemView.findViewById(R.id.tv_user_status);
         }
     }
 
@@ -33,17 +31,16 @@ public class ActivityItemAdapter
         void onItemClick(int position);
     }
 
-    private List<ActivityItem> activityItemList;
-
+    private List<UserItem> userItemList;
     private onItemClickListener clickListener;
 
-    public ActivityItemAdapter(List<ActivityItem> list) {
-        this.activityItemList = list;
+    public UserItemAdapter(List<UserItem> list) {
+        this.userItemList = list;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_activity, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user, parent,false);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,23 +54,17 @@ public class ActivityItemAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.tvName.setText(activityItemList.get(position).getName());
-        holder.tvTime.setText(getTime(activityItemList.get(position).getStartTime()));
+        holder.tvName.setText(userItemList.get(position).getRealname() + "(" + userItemList.get(position).getNickname() + ")");
+//        holder.tvStatus.setText();
         holder.itemView.setTag(position);
     }
 
     @Override
     public int getItemCount() {
-        return activityItemList.size();
+        return userItemList.size();
     }
 
     public void setItemClickListener(onItemClickListener listener) {
         this.clickListener = listener;
-    }
-
-    private String getTime(String timestamp) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String time = sdf.format(new Date(Long.valueOf(timestamp)));
-        return time;
     }
 }
