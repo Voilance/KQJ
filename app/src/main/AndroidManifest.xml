@@ -37,7 +37,8 @@
             android:name=".Activity.CreateActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".Activity.ActivityInfo" />
-        <activity android:name=".Activity.UserInfo"></activity>
+        <activity android:name=".Activity.UserInfo" />
+        <activity android:name=".Activity.SearchUserActivity"></activity>
     </application>
 
 </manifest>

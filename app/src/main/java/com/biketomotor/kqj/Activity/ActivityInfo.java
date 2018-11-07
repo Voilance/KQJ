@@ -17,6 +17,7 @@ import com.biketomotor.kqj.Class.UserItem;
 import com.biketomotor.kqj.Interface.HttpsListener;
 import com.biketomotor.kqj.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +37,7 @@ public class ActivityInfo
     private TextView tvEndTime;
     private TextView tvInfo;
     private Button btSignin;
+    private Button btAddUser;
 
     private List<UserItem> userItemList;
     private UserItemAdapter userItemAdapter;
@@ -69,7 +71,9 @@ public class ActivityInfo
         tvEndTime = findViewById(R.id.tv_end_time);
         tvInfo = findViewById(R.id.tv_info);
         btSignin = findViewById(R.id.bt_signin);
+        btAddUser = findViewById(R.id.bt_add_user);
         btSignin.setOnClickListener(this);
+        btAddUser.setOnClickListener(this);
 
         recyclerView = findViewById(R.id.rv_participant_list);
         userItemList = new ArrayList<>();
@@ -77,7 +81,7 @@ public class ActivityInfo
         userItemAdapter.setItemClickListener(new UserItemAdapter.onItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                UserInfo.actionActivity(ActivityInfo.this, userItemList.get(position).getAccount(), 1);
+                UserInfo.actionActivity(ActivityInfo.this, userItemList.get(position).getAccount(), 0);
             }
         });
         recyclerView.setAdapter(userItemAdapter);
@@ -85,7 +89,11 @@ public class ActivityInfo
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         onGetActivityInfo();
     }
 
@@ -93,6 +101,9 @@ public class ActivityInfo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_signin:
+                break;
+            case R.id.bt_add_user:
+                SearchUserActivity.actionActivity(ActivityInfo.this, 1);
                 break;
             default:
                 break;
@@ -107,6 +118,7 @@ public class ActivityInfo
                     @Override
                     public void run() {
                         try {
+                            Log.e(TAG, response);
                             JSONObject data = new JSONObject(response);
                             String result = data.getString("result");
                             String reason = data.getString("reason");
@@ -123,25 +135,36 @@ public class ActivityInfo
                                 tvStartTime.setText("正式开始时间:" + getTime(startTime));
                                 tvEndTime.setText("签到截止时间:" + getTime(endTime));
 
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
-                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+                                JSONArray array = new JSONArray(data.getString("participant"));
+                                Log.e(TAG, array.toString());
+                                for (int i = 0; i < array.length(); i++) {
+                                    JSONObject object = array.getJSONObject(i);
+                                    String pName = object.getString("name");
+                                    String pRealname = object.getString("realname");
+                                    String pAccount = object.getString("account");
+                                    Log.e(TAG, pName+pRealname+pAccount);
+                                    userItemList.add(new UserItem(pName, pRealname, pAccount));
+                                }
+
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
+//                                userItemList.add(new UserItem("nickname", "realname", "1", "1"));
                             } else {
                                 toast(reason);
                                 finish();

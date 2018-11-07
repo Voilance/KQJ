@@ -83,16 +83,4 @@ public class User {
         User.editor.commit();
         User.editor = null;
     }
-
-    public static void readJSON(JSONObject data) {
-        try {
-            User.account = data.getString("account");
-            User.password = data.getString("password");
-            User.nickname = data.getString("nickname");
-            User.realname = data.getString("realname");
-            User.tel = data.getString("telnumber");
-        } catch (JSONException e) {
-            Log.e(TAG, "readJSON:" + e.toString());
-        }
-    }
 }

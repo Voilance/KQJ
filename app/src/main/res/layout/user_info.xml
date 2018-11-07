@@ -130,6 +130,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_add_friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_info"
@@ -148,15 +149,26 @@
             android:text="加为好友"
             android:textSize="16sp"/>
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_invite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp"
+        android:background="#ffffff"
+        android:visibility="invisible">
+
         <Button
             android:id="@+id/bt_invite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_centerHorizontal="true"
             android:layout_marginLeft="60dp"
-            android:layout_below="@id/bt_add_friend"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:text="邀请加入活动"
             android:textSize="16sp"/>
 

@@ -2,12 +2,20 @@ package com.biketomotor.kqj.Class;
 
 import android.support.annotation.NonNull;
 
+
 public class UserItem implements Comparable<UserItem> {
 
     private String nickname;
     private String realname;
     private String account;
     private String tel;
+
+    public UserItem(String nickname, String realname, String account) {
+        this.nickname = nickname;
+        this.realname = realname;
+        this.account = account;
+        this.tel = "No tel";
+    }
 
     public UserItem(String nickname, String realname, String account, String tel) {
         this.nickname = nickname;

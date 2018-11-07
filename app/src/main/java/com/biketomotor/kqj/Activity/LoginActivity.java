@@ -109,14 +109,20 @@ public class LoginActivity
                     @Override
                     public void run() {
                         try {
+                            Log.e(TAG, response);
                             JSONObject data = new JSONObject(response);
                             String result = data.getString("result");
                             String reason = data.getString("reason");
                             // 如果登陆成功，则利用后端返回的信息（包括用户所有的基本信息）修改User
                             if (result.equals("true")) {
-//                                            User.readJSON(data);
+                                String nickname = data.getString("name");
+                                String realname = data.getString("realname");
+                                String tel = data.getString("telnumber");
                                 User.setAccount(account);
                                 User.setPassword(password);
+                                User.setNickname(nickname);
+                                User.setRealname(realname);
+                                User.setTel(tel);
                                 User.setOnline(true);
                                 User.writeSP(getSharedPreferences(User.getAccount(), Context.MODE_PRIVATE));
                                 Sys.setLogin(true);
