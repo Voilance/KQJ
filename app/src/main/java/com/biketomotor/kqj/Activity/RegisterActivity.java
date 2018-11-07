@@ -105,7 +105,7 @@ public class RegisterActivity
             toast("请输入您的手机号码");
             return false;
         }
-        if (!tel.matches("[1][358]\\d{9}")) {
+        if (!tel.matches("[1][3578]\\d{9}")) {
             toast("请输入合法的手机号码");
             return false;
         }
@@ -143,31 +143,25 @@ public class RegisterActivity
     }
 
     private void onRegister() {
-        HttpsUtil.sendPostRequest(HttpsUtil.registerAddress, getJsonData(), new HttpsListener() {
+        HttpsUtil.sendPostRequest(HttpsUtil.registerAddr, getJsonData(), new HttpsListener() {
             @Override
             public void onSuccess(final String response) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
+                            Log.e(TAG, response);
                             JSONObject data = new JSONObject(response);
                             String result = data.getString("result");
                             String reason = data.getString("reason");
                             if (result.equals("true")) {
-                                User.setAccount(account);
-                                User.setPassword(password);
-                                User.setNickname(nickname);
-                                User.setRealname(realname);
-                                User.setTel(tel);
-                                User.writeSP(getSharedPreferences(User.getAccount(), Context.MODE_PRIVATE));
-                                Sys.setLogin(false);
-                                Sys.writeSP(getSharedPreferences("user", Context.MODE_PRIVATE));
+                                Sys.setAccount(account);
                                 finish();
                             } else {
                                 toast(reason);
                             }
                         } catch (JSONException e) {
-                            Log.e(TAG, "onSuccess:" + e.toString());
+                            Log.e(TAG, "onRegister/onSuccess:" + e.toString());
                         }
                     }
                 });
@@ -175,7 +169,7 @@ public class RegisterActivity
 
             @Override
             public void onFailure(Exception exception) {
-                Log.e(TAG, "onFailure:" + exception.toString());
+                Log.e(TAG, "onRegister/onFailure:" + exception.toString());
             }
         });
     }

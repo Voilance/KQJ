@@ -5,14 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.biketomotor.kqj.Adapter.BottomNavigationViewHelper;
 import com.biketomotor.kqj.Adapter.ViewPagerAdapter;
@@ -58,7 +55,7 @@ public class MainActivity
     @Override
     protected void onResume() {
         super.onResume();
-        autoLogin();
+        onAutoLogin();
     }
 
     private void initView() {
@@ -122,13 +119,6 @@ public class MainActivity
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
-//        // 禁止ViewPager滑动
-//        viewPager.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return true;
-//            }
-//        });
         initViewPager(viewPager);
     }
 
@@ -150,63 +140,6 @@ public class MainActivity
         pager.setAdapter(adapter);
         pager.setCurrentItem(2);
         pager.setOffscreenPageLimit(5);
-    }
-
-    private void autoLogin() {
-        // 判断用户是否已经登陆，避免该活动重复自动登陆
-        if (!User.isOnline()) {
-            Sys.readSP(getSharedPreferences("user", Context.MODE_PRIVATE));
-            User.readSP(getSharedPreferences(Sys.getAccount(), Context.MODE_PRIVATE));
-            // 判断本地是否存有最近登陆的用户信息，
-            // 如果有且上次应用退出时用户处于登陆状态，则自动登陆
-            // 否则跳到登陆活动
-            if (!Sys.getAccount().equals("") && Sys.isLogin()) {
-                HttpsUtil.sendPostRequest(HttpsUtil.loginAddress, getJsonData(), new HttpsListener() {
-                    @Override
-                    public void onSuccess(final String response) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    JSONObject data = new JSONObject(response);
-                                    String result = data.getString("result");
-                                    String reason = data.getString("reason");
-                                    if (result.equals("true")) {
-//                                        User.readJSON(data); // 利用后端返回的信息（包含用户所有基本信息）初始化User
-                                        // 设置登陆状态为true并初始化页面
-                                        User.setOnline(true);
-                                    } else {
-                                        Sys.setLogin(false);
-                                        Sys.writeSP(getSharedPreferences("user", Context.MODE_PRIVATE));
-                                        LoginActivity.actionActivity(MainActivity.this);
-                                    }
-                                } catch (JSONException e) {
-                                    Log.e(TAG, "autoLogin/onSuccess:" + e.toString());
-                                }
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(Exception exception) {
-                        Log.e(TAG, "autoLogin/onFailure:" + exception.toString());
-                    }
-                });
-            } else {
-                LoginActivity.actionActivity(MainActivity.this);
-            }
-        }
-    }
-
-    private JSONObject getJsonData() {
-        JSONObject data = new JSONObject();
-        try {
-            data.put("account", User.getAccount());
-            data.put("pwd", User.getPassword());
-        } catch (JSONException e) {
-            Log.e(TAG, "getJsonData:" + e.toString());
-        }
-        return data;
     }
 
     public void editTitleNumber(int number) {
@@ -252,7 +185,7 @@ public class MainActivity
     public void editTitleTask() {
         switch (currentPage) {
             case 0:
-                toast("添加联系人");
+                SearchUserActivity.actionActivity(MainActivity.this, "", 0);
                 break;
             case 1:
                 toast("添加课程");
@@ -263,6 +196,68 @@ public class MainActivity
             default:
                 break;
         }
+    }
+
+    public static void editView() {
+        SigninFragment.editView();
+        ActivityFragment.editView();
+        MineFragment.editView();
+    }
+
+    private void onAutoLogin() {
+        if (!User.isOnline()) {
+            Sys.readSP(getSharedPreferences(Sys.SPName, Context.MODE_PRIVATE));
+            if (!Sys.getAccount().equals("") && Sys.isLogin()) {
+                HttpsUtil.sendPostRequest(HttpsUtil.loginAddr, getJsonData(), new HttpsListener() {
+                    @Override
+                    public void onSuccess(final String response) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Log.e(TAG, response);
+                                    JSONObject data = new JSONObject(response);
+                                    String result = data.getString("result");
+                                    if (result.equals("true")) {
+                                        JSONObject userInfo = data.getJSONObject("info");
+                                        User.setAccount(userInfo.getString("account"));
+                                        User.setNickname(userInfo.getString("name"));
+                                        User.setRealname(userInfo.getString("realname"));
+                                        User.setTel(userInfo.getString("telnumber"));
+                                        User.setOnline(true);
+                                        MainActivity.editView();
+                                    } else {
+                                        Sys.setLogin(false);
+                                        Sys.writeSP(getSharedPreferences(Sys.SPName, Context.MODE_PRIVATE));
+                                        LoginActivity.actionActivity(MainActivity.this);
+                                    }
+                                } catch (JSONException e) {
+                                    Log.e(TAG, "onAutoLogin/onSuccess:" + e.toString());
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception exception) {
+                        Log.e(TAG, "onAutoLogin/onFailure:" + exception.toString());
+                    }
+                });
+            } else {
+                LoginActivity.actionActivity(MainActivity.this);
+            }
+        }
+    }
+
+    private JSONObject getJsonData() {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("account", Sys.getAccount());
+            data.put("pwd", Sys.getPassword());
+        } catch (JSONException e) {
+            Log.e(TAG, "getJsonData:" + e.toString());
+        }
+        return data;
     }
 
 }

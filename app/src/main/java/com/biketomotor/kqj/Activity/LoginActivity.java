@@ -32,11 +32,21 @@ public class LoginActivity
 
     private String account;
     private String password;
+    private String nickname;
+    private String realname;
+    private String tel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        etAccount.setText(Sys.getAccount());
     }
 
     private void initView() {
@@ -53,13 +63,6 @@ public class LoginActivity
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        etAccount.setText(User.getAccount());
-//        etPassword.setText(User.getPassword());
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_login:
@@ -68,7 +71,7 @@ public class LoginActivity
                 }
                 break;
             case R.id.tv_forget_password:
-                toast(User.getPassword());
+                toast(Sys.getPassword());
                 break;
             case R.id.tv_register:
                 RegisterActivity.actionActivity(LoginActivity.this);
@@ -102,7 +105,7 @@ public class LoginActivity
     }
 
     private void onLogin() {
-        HttpsUtil.sendPostRequest(HttpsUtil.loginAddress, getJsonData(), new HttpsListener() {
+        HttpsUtil.sendPostRequest(HttpsUtil.loginAddr, getJsonData(), new HttpsListener() {
             @Override
             public void onSuccess(final String response) {
                 runOnUiThread(new Runnable() {
@@ -115,24 +118,22 @@ public class LoginActivity
                             String reason = data.getString("reason");
                             // 如果登陆成功，则利用后端返回的信息（包括用户所有的基本信息）修改User
                             if (result.equals("true")) {
-                                String nickname = data.getString("name");
-                                String realname = data.getString("realname");
-                                String tel = data.getString("telnumber");
-                                User.setAccount(account);
-                                User.setPassword(password);
-                                User.setNickname(nickname);
-                                User.setRealname(realname);
-                                User.setTel(tel);
+                                JSONObject userInfo = data.getJSONObject("info");
+                                nickname = userInfo.getString("name");
+                                realname = userInfo.getString("realname");
+                                tel = userInfo.getString("telnumber");
+                                User.init(account, password, nickname, realname, tel);
                                 User.setOnline(true);
-                                User.writeSP(getSharedPreferences(User.getAccount(), Context.MODE_PRIVATE));
+                                Sys.init(account, password);
                                 Sys.setLogin(true);
-                                Sys.writeSP(getSharedPreferences("user", Context.MODE_PRIVATE));
+                                Sys.writeSP(getSharedPreferences(Sys.SPName, Context.MODE_PRIVATE));
+                                MainActivity.editView();
                                 finish();
                             } else {
                                 toast(reason);
                             }
                         } catch (JSONException e) {
-                            Log.e(TAG, "activity_login/onSuccess:" + e.toString());
+                            Log.e(TAG, "onLogin/onSuccess:" + e.toString());
                         }
                     }
                 });
@@ -140,7 +141,7 @@ public class LoginActivity
 
             @Override
             public void onFailure(Exception exception) {
-                Log.e(TAG, "activity_login/onFailure:" + exception.toString());
+                Log.e(TAG, "onLogin/onFailure:" + exception.toString());
             }
         });
     }

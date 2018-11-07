@@ -31,6 +31,7 @@ public class UserInfo
     private Button btInvite;
 
     private String account;
+    private String id;
     private int requestCode;
 
     @Override
@@ -60,6 +61,7 @@ public class UserInfo
 
         Intent intent = getIntent();
         account = intent.getStringExtra("account");
+        id = intent.getStringExtra("id");
         requestCode = intent.getIntExtra("requestCode", 0);
 
         // 从ActivityInfo跳转过来邀请用户加入活动
@@ -67,7 +69,7 @@ public class UserInfo
             rlInvite.setVisibility(View.VISIBLE);
         }
 
-//        getUserInfo();
+        getUserInfo();
     }
 
     @Override
@@ -76,7 +78,7 @@ public class UserInfo
             case R.id.bt_add_friend:
                 break;
             case R.id.bt_invite:
-//                inviteUser();
+                inviteUser();
                 break;
             default:
                 break;
@@ -84,23 +86,28 @@ public class UserInfo
     }
 
     private void getUserInfo() {
-        HttpsUtil.sendPostRequest(HttpsUtil.getUserInfoAddress, getJsonData(), new HttpsListener() {
+        HttpsUtil.sendPostRequest(HttpsUtil.getUserInfoAddr, getJsonData(), new HttpsListener() {
             @Override
             public void onSuccess(final String response) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
+                            Log.e(TAG, response);
                             JSONObject data = new JSONObject(response);
                             String result = data.getString("result");
                             String reason = data.getString("reason");
                             if (result.equals("true")) {
-                                ;
+                                JSONObject userInfo = data.getJSONObject("info");
+                                tvNickname.setText(userInfo.getString("name"));
+                                tvAccount.setText(userInfo.getString("account"));
+                                tvRealname.setText("姓名:" + userInfo.getString("realname"));
+                                tvTel.setText("电话:" + userInfo.getString("telnumber"));
                             } else {
                                 toast(reason);
                             }
                         } catch (JSONException e) {
-                            Log.e(TAG, "getUserInfoOnsuccess:" + e.toString());
+                            Log.e(TAG, "getUserInfo/Onsuccess:" + e.toString());
                         }
                     }
                 });
@@ -108,30 +115,30 @@ public class UserInfo
 
             @Override
             public void onFailure(Exception exception) {
-                Log.e(TAG, "getUserInfoOnFailure:" + exception.toString());
+                Log.e(TAG, "getUserInfo/OnFailure:" + exception.toString());
             }
         });
     }
 
     private void inviteUser() {
-        HttpsUtil.sendPostRequest(HttpsUtil.inviteUserAddress, getJsonData(), new HttpsListener() {
+        HttpsUtil.sendPostRequest(HttpsUtil.inviteUserAddr, getInviteJsonData(), new HttpsListener() {
             @Override
             public void onSuccess(final String response) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            toast(response);
+                            Log.e(TAG, response);
                             JSONObject data = new JSONObject(response);
                             String result = data.getString("result");
                             String reason = data.getString("reason");
                             if (result.equals("true")) {
-                                ;
+                                rlInvite.setVisibility(View.INVISIBLE);
                             } else {
                                 toast(reason);
                             }
                         } catch (JSONException e) {
-                            Log.e(TAG, "inviteOnSuccess:" + e.toString());
+                            Log.e(TAG, "inviteUser/OnSuccess:" + e.toString());
                         }
                     }
                 });
@@ -139,7 +146,7 @@ public class UserInfo
 
             @Override
             public void onFailure(Exception exception) {
-                Log.e(TAG, "inviteOnFailure:" + exception.toString());
+                Log.e(TAG, "inviteUser/OnFailure:" + exception.toString());
             }
         });
     }
@@ -154,9 +161,21 @@ public class UserInfo
         return data;
     }
 
-    public static void actionActivity(Context context, String acount, int code) {
+    private JSONObject getInviteJsonData() {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("account", account);
+            data.put("id", id);
+        } catch (JSONException e) {
+            Log.e(TAG, "getJsonData:" + e.toString());
+        }
+        return data;
+    }
+
+    public static void actionActivity(Context context, String acount, String activityID, int code) {
         Intent intent = new Intent(context, UserInfo.class);
         intent.putExtra("account", acount);
+        intent.putExtra("id", activityID);
         intent.putExtra("requestCode", code);
         context.startActivity(intent);
     }

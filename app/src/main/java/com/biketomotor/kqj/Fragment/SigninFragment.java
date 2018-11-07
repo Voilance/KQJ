@@ -1,6 +1,5 @@
 package com.biketomotor.kqj.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.biketomotor.kqj.Activity.ActivityInfo;
 import com.biketomotor.kqj.Activity.MainActivity;
@@ -29,15 +27,14 @@ public class SigninFragment
         implements View.OnClickListener {
     private static final String TAG = "TagSignin";
 
-    private MainActivity mainActivity;
-    private TextView tvTips;
-    private TextView tvName;
-    private Button btSignin;
+    private static MainActivity mainActivity;
+    private static TextView tvTips;
+    private static TextView tvName;
+    private static Button btSignin;
 
-    private String id;
-    private String name;
-    private String startTime;
-    private String endTime;
+    private static String id;
+    private static String name;
+    private static String startTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,15 +49,12 @@ public class SigninFragment
         id = "";
         name = "";
         startTime = "";
-        endTime = "";
 
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getUrgentActivity();
+    public static void editView() {
+        onUrgentActivity();
     }
 
     @Override
@@ -76,29 +70,32 @@ public class SigninFragment
         }
     }
 
-    private void getUrgentActivity() {
-        HttpsUtil.sendPostRequest(HttpsUtil.urgentActivityAddress, getJsonData(), new HttpsListener() {
+    private static void onUrgentActivity() {
+        HttpsUtil.sendPostRequest(HttpsUtil.urgentActivityAddr, getJsonData(), new HttpsListener() {
             @Override
             public void onSuccess(final String response) {
                 mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
+                            Log.e(TAG, response);
                             JSONObject data = new JSONObject(response);
                             String result = data.getString("result");
-                            String reason = data.getString("reason");
                             if (result.equals("true")) {
                                 id = data.getString("id");
                                 name = data.getString("name");
                                 startTime = data.getString("time");
-                                endTime = data.getString("endTime");
                                 tvName.setText(name);
                                 btSignin.setText("签到\n" + getTime(startTime));
                             } else {
-                                Toast.makeText(mainActivity, reason, Toast.LENGTH_SHORT).show();
+                                id = "";
+                                name = "";
+                                startTime = "";
+                                tvName.setText("暂无活动");
+                                btSignin.setText("闲");
                             }
                         } catch (JSONException e) {
-                            Log.e(TAG, "onSuccess:" + e.toString());
+                            Log.e(TAG, "onUrgentActivity/onSuccess:" + e.toString());
                         }
                     }
                 });
@@ -106,12 +103,12 @@ public class SigninFragment
 
             @Override
             public void onFailure(Exception exception) {
-                Log.e(TAG, "onFailure:" + exception.toString());
+                Log.e(TAG, "onUrgentActivity/onFailure:" + exception.toString());
             }
         });
     }
 
-    private JSONObject getJsonData() {
+    private static JSONObject getJsonData() {
         JSONObject data = new JSONObject();
         try {
             data.put("participant", User.getAccount());
@@ -121,7 +118,7 @@ public class SigninFragment
         return data;
     }
 
-    private String getTime(String timestamp) {
+    private static String getTime(String timestamp) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd\nHH:mm");
         String time = sdf.format(new Date(Long.valueOf(timestamp)));
         return time;

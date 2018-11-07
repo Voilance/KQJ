@@ -22,6 +22,7 @@ public class SearchUserActivity
     private EditText etAccount;
     private Button btSearch;
 
+    private String id;
     private int requestCode;
     private String account;
 
@@ -39,6 +40,7 @@ public class SearchUserActivity
         btSearch.setOnClickListener(this);
 
         Intent intent = getIntent();
+        id = intent.getStringExtra("id");
         requestCode = intent.getIntExtra("requestCode", 0);
     }
 
@@ -53,7 +55,6 @@ public class SearchUserActivity
         switch (v.getId()) {
             case R.id.bt_search_user:
                 if (isInfoValid()) {
-//                    UserInfo.actionActivity(SearchUserActivity.this, account, 1);
                     onSearchUser();
                 }
                 break;
@@ -72,7 +73,7 @@ public class SearchUserActivity
     }
 
     private void onSearchUser() {
-        HttpsUtil.sendPostRequest(HttpsUtil.getUserInfoAddress, getJsonData(), new HttpsListener() {
+        HttpsUtil.sendPostRequest(HttpsUtil.getUserInfoAddr, getJsonData(), new HttpsListener() {
             @Override
             public void onSuccess(final String response) {
                 runOnUiThread(new Runnable() {
@@ -84,7 +85,7 @@ public class SearchUserActivity
                             String result = data.getString("result");
                             String reason = data.getString("reason");
                             if (result.equals("true")) {
-                                ;
+                                UserInfo.actionActivity(SearchUserActivity.this, account, id, requestCode);
                             } else {
                                 toast(reason);
                             }
@@ -112,8 +113,9 @@ public class SearchUserActivity
         return data;
     }
 
-    public static void actionActivity(Context context, int code) {
+    public static void actionActivity(Context context, String activityID, int code) {
         Intent intent = new Intent(context, SearchUserActivity.class);
+        intent.putExtra("id", activityID);
         intent.putExtra("requestCode", code);
         context.startActivity(intent);
     }

@@ -201,7 +201,7 @@ public class CreateActivity
     }
 
     private void onCreateActivity() {
-        HttpsUtil.sendPostRequest(HttpsUtil.createActivityAddress, getJsonData(), new HttpsListener() {
+        HttpsUtil.sendPostRequest(HttpsUtil.createActivityAddr, getJsonData(), new HttpsListener() {
             @Override
             public void onSuccess(final String response) {
                 runOnUiThread(new Runnable() {
@@ -213,6 +213,7 @@ public class CreateActivity
                             String reason = data.getString("reason");
                             if (result.equals("true")) {
                                 toast("新建成功");
+                                MainActivity.editView();
                                 finish();
                             } else {
                                 toast(reason);

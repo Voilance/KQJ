@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.biketomotor.kqj.Activity.MainActivity;
 import com.biketomotor.kqj.Activity.SettingActivity;
 import com.biketomotor.kqj.Class.User;
 import com.biketomotor.kqj.R;
@@ -18,15 +19,17 @@ public class MineFragment
         implements View.OnClickListener {
     private static final String TAG = "TagMine";
 
+    private MainActivity mainActivity;
     private RelativeLayout rlAvatar;
-    private TextView tvNickname;
-    private TextView tvAccount;
+    private static TextView tvNickname;
+    private static TextView tvAccount;
     private RelativeLayout rlSetting;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
 
+        mainActivity = (MainActivity)getActivity();
         rlAvatar = view.findViewById(R.id.rl_avatar);
         rlAvatar.setOnClickListener(this);
         tvNickname = view.findViewById(R.id.tv_nickname);
@@ -37,12 +40,6 @@ public class MineFragment
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        tvNickname.setText(User.getNickname());
-        tvAccount.setText(User.getAccount());
-    }
 
     @Override
     public void onClick(View v) {
@@ -51,10 +48,15 @@ public class MineFragment
                 Toast.makeText(getContext(), "avatar", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.rl_setting:
-                SettingActivity.actionActivity(getContext());
+                SettingActivity.actionActivity(mainActivity);
                 break;
             default:
                 break;
         }
+    }
+
+    public static void editView() {
+        tvNickname.setText(User.getNickname());
+        tvAccount.setText(User.getAccount());
     }
 }

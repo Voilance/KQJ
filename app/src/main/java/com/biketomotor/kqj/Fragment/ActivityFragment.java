@@ -32,10 +32,10 @@ public class ActivityFragment
         extends Fragment {
     private static final String TAG = "TagActivity";
 
-    private MainActivity mainActivity;
-    private List<ActivityItem> activityItemList;
-    private ActivityItemAdapter activityItemAdapter;
-    private RecyclerView recyclerView;
+    private static MainActivity mainActivity;
+    private static List<ActivityItem> activityItemList;
+    private static ActivityItemAdapter activityItemAdapter;
+    private static RecyclerView recyclerView;
 
 
     @Override
@@ -58,14 +58,12 @@ public class ActivityFragment
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    public static void editView() {
         getParticipantActivity();
     }
 
-    private void getParticipantActivity() {
-        HttpsUtil.sendPostRequest(HttpsUtil.participantActivityAddress, getJsonData(), new HttpsListener() {
+    private static void getParticipantActivity() {
+        HttpsUtil.sendPostRequest(HttpsUtil.participantActivityAddr, getJsonData(), new HttpsListener() {
             @Override
             public void onSuccess(final String response) {
                 mainActivity.runOnUiThread(new Runnable() {
@@ -107,7 +105,7 @@ public class ActivityFragment
         });
     }
 
-    private JSONObject getJsonData() {
+    private static JSONObject getJsonData() {
         JSONObject data = new JSONObject();
         try {
             data.put("participant", User.getAccount());

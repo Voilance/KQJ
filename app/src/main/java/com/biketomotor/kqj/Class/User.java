@@ -1,11 +1,5 @@
 package com.biketomotor.kqj.Class;
 
-import android.content.SharedPreferences;
-import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class User {
     private static final String TAG = "User";
 
@@ -15,7 +9,19 @@ public class User {
     private static String realname = "";
     private static String tel = "";
     private static boolean online = false;
-    private static SharedPreferences.Editor editor = null;
+
+    public static void init(String account,
+                            String password,
+                            String nickname,
+                            String realname,
+                            String tel
+    ) {
+        User.account = account;
+        User.password = password;
+        User.nickname = nickname;
+        User.realname = realname;
+        User.tel = tel;
+    }
 
     public static String getAccount() {
         return User.account;
@@ -63,24 +69,5 @@ public class User {
 
     public static void setOnline(boolean online) {
         User.online = online;
-    }
-
-    public static void readSP(SharedPreferences sp) {
-        User.account = sp.getString("account", "");
-        User.password = sp.getString("password", "");
-        User.nickname = sp.getString("nickname", "");
-        User.realname = sp.getString("realname", "");
-        User.tel = sp.getString("tel", null);
-    }
-
-    public static void writeSP(SharedPreferences sp) {
-        User.editor = sp.edit();
-        User.editor.putString("account", User.account);
-        User.editor.putString("password", User.password);
-        User.editor.putString("nickname", User.nickname);
-        User.editor.putString("realname", User.realname);
-        User.editor.putString("tel", User.tel);
-        User.editor.commit();
-        User.editor = null;
     }
 }

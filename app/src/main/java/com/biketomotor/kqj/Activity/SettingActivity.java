@@ -2,7 +2,6 @@ package com.biketomotor.kqj.Activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -36,22 +35,22 @@ public class SettingActivity
         tvLogout.setOnClickListener(this);
     }
 
-    public static void actionActivity(Context context) {
-        context.startActivity(new Intent(context, SettingActivity.class));
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_logout:
                 User.setOnline(false);
-                User.writeSP(getSharedPreferences(User.getAccount(), Context.MODE_PRIVATE));
                 Sys.setLogin(false);
-                Sys.writeSP(getSharedPreferences("user", Context.MODE_PRIVATE));
+                Sys.writeSP(getSharedPreferences(Sys.SPName, Context.MODE_PRIVATE));
                 finish();
                 break;
             default:
                 break;
         }
     }
+
+    public static void actionActivity(Context context) {
+        context.startActivity(new Intent(context, SettingActivity.class));
+    }
+
 }

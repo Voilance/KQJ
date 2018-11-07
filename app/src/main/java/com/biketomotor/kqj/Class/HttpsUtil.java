@@ -11,14 +11,14 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class HttpsUtil {
 
-    public static final String loginAddress = "https://app.biketomotor.cn/api/UserSignIn";
-    public static final String registerAddress = "https://app.biketomotor.cn/api/UserSignUp";
-    public static final String participantActivityAddress = "https://app.biketomotor.cn/api/GetParticipantActivity";
-    public static final String createActivityAddress = "https://app.biketomotor.cn/api/CreateActivity";
-    public static final String activityInfoAddress = "https://app.biketomotor.cn/api/GetActivityDetails";
-    public static final String urgentActivityAddress = "https://app.biketomotor.cn/api/UrgentActivity";
-    public static final String inviteUserAddress = "https://app.biketomotor.cn/api/InviteUser";
-    public static final String getUserInfoAddress = "https://app.biketomotor.cn/api/GetUserInfo";
+    public static final String loginAddr = "https://app.biketomotor.cn/api/UserSignIn";
+    public static final String registerAddr = "https://app.biketomotor.cn/api/UserSignUp";
+    public static final String participantActivityAddr = "https://app.biketomotor.cn/api/GetParticipantActivity";
+    public static final String createActivityAddr = "https://app.biketomotor.cn/api/CreateActivity";
+    public static final String activityInfoAddr = "https://app.biketomotor.cn/api/GetActivityDetails";
+    public static final String urgentActivityAddr = "https://app.biketomotor.cn/api/UrgentActivity";
+    public static final String inviteUserAddr = "https://app.biketomotor.cn/api/InviteUser";
+    public static final String getUserInfoAddr = "https://app.biketomotor.cn/api/GetUserInfo";
 
     public static void sendPostRequest(
             final String address,
