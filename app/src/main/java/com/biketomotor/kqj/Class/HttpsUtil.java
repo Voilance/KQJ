@@ -19,6 +19,7 @@ public class HttpsUtil {
     public static final String urgentActivityAddr = "https://app.biketomotor.cn/api/UrgentActivity";
     public static final String inviteUserAddr = "https://app.biketomotor.cn/api/InviteUser";
     public static final String getUserInfoAddr = "https://app.biketomotor.cn/api/GetUserInfo";
+    public static final String editActivityAddr = "https://app.biketomotor.cn/api/EditActivity";
 
     public static void sendPostRequest(
             final String address,

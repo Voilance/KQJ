@@ -164,7 +164,7 @@ public class UserInfo
     private JSONObject getInviteJsonData() {
         JSONObject data = new JSONObject();
         try {
-            data.put("account", account);
+            data.put("participant", account);
             data.put("id", id);
         } catch (JSONException e) {
             Log.e(TAG, "getJsonData:" + e.toString());
