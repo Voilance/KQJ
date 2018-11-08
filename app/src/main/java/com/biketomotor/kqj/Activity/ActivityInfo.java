@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.biketomotor.kqj.Adapter.UserItemAdapter;
 import com.biketomotor.kqj.Class.HttpsUtil;
+import com.biketomotor.kqj.Class.User;
 import com.biketomotor.kqj.Class.UserItem;
 import com.biketomotor.kqj.Interface.HttpsListener;
 import com.biketomotor.kqj.R;
@@ -48,6 +49,7 @@ public class ActivityInfo
     private String startTime;
     private String endTime;
     private String creater;
+    private int requestCode;
 
 
     @Override
@@ -86,12 +88,13 @@ public class ActivityInfo
         userItemAdapter.setItemClickListener(new UserItemAdapter.onItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                UserInfo.actionActivity(ActivityInfo.this, userItemList.get(position).getAccount(), id, 0);
+                UserInfo.actionActivity(ActivityInfo.this, userItemList.get(position).getAccount(), id, requestCode);
             }
         });
         recyclerView.setAdapter(userItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ActivityInfo.this));
 
+        requestCode = 0;
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
     }
@@ -100,9 +103,14 @@ public class ActivityInfo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_signin:
+                if (creater.equals(User.getAccount())) {
+                    // 打开服务器
+                } else {
+                    // 搜索、连接
+                }
                 break;
             case R.id.bt_add_user:
-                SearchUserActivity.actionActivity(ActivityInfo.this, id, 1);
+                SearchUserActivity.actionActivity(ActivityInfo.this, id, requestCode);
                 break;
             default:
                 break;
@@ -133,6 +141,14 @@ public class ActivityInfo
                                 tvPlace.setText(place);
                                 tvStartTime.setText("正式开始时间:" + getTime(startTime));
                                 tvEndTime.setText("签到截止时间:" + getTime(endTime));
+
+                                if (creater.equals(User.getAccount())) {
+                                    requestCode = 1;
+                                    btSignin.setText("开始签到");
+                                } else {
+                                    requestCode = 0;
+                                    btAddUser.setVisibility(View.INVISIBLE);
+                                }
 
                                 JSONArray array = new JSONArray(data.getString("participant"));
                                 for (int i = 0; i < array.length(); i++) {
