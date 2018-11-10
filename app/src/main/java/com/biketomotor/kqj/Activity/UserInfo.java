@@ -134,6 +134,7 @@ public class UserInfo
                             String reason = data.getString("reason");
                             if (result.equals("true")) {
                                 rlInvite.setVisibility(View.INVISIBLE);
+                                toast("成功添加");
                             } else {
                                 toast(reason);
                             }
