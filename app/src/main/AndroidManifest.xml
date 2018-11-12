@@ -3,6 +3,8 @@
     package="com.biketomotor.kqj">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -36,9 +38,21 @@
         <activity
             android:name=".Activity.CreateActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activity.ActivityInfo" />
-        <activity android:name=".Activity.UserInfo" />
-        <activity android:name=".Activity.SearchUserActivity"></activity>
+        <activity
+            android:name=".Activity.ActivityInfo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.UserInfo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.SearchUserActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".Service.SignService"
+            android:exported="false" />
+
+        <activity android:name=".Activity.EditActivity"></activity>
     </application>
 
 </manifest>

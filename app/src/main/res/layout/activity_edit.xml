@@ -34,7 +34,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -227,12 +227,24 @@
                 android:background="@color/colorCursor"/>
 
             <Button
-                android:id="@+id/bt_create"
+                android:id="@+id/bt_edit"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center"
-                android:layout_margin="20dp"
-                android:text="新建活动"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:text="确认修改"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/bt_delete"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:text="删除活动"
                 android:textSize="16sp"/>
 
         </LinearLayout>

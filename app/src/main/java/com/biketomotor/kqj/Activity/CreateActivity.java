@@ -38,6 +38,7 @@ public class CreateActivity
     private TextView tvStartTime;
     private TextView tvEndDate;
     private TextView tvEndTime;
+    private EditText etInfo;
     private Button btCreate;
 
     private String name;
@@ -105,6 +106,7 @@ public class CreateActivity
         tvStartTime = findViewById(R.id.tv_start_time);
         tvEndDate = findViewById(R.id.tv_end_date);
         tvEndTime = findViewById(R.id.tv_end_time);
+        etInfo = findViewById(R.id.et_info);
         btCreate = findViewById(R.id.bt_create);
 
         tvStartDate.setOnClickListener(this);

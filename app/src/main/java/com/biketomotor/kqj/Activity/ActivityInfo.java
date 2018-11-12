@@ -1,13 +1,19 @@
 package com.biketomotor.kqj.Activity;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.biketomotor.kqj.Adapter.UserItemAdapter;
@@ -16,6 +22,8 @@ import com.biketomotor.kqj.Class.User;
 import com.biketomotor.kqj.Class.UserItem;
 import com.biketomotor.kqj.Interface.HttpsListener;
 import com.biketomotor.kqj.R;
+import com.biketomotor.kqj.Service.SignService;
+import com.biketomotor.kqj.Task.SignTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +39,7 @@ public class ActivityInfo
         implements View.OnClickListener {
     private static final String TAG = "TagActivityInfo";
 
+    private ImageView ivTask;
     private TextView tvName;
     private TextView tvPlace;
     private TextView tvStartTime;
@@ -50,7 +59,38 @@ public class ActivityInfo
     private String endTime;
     private String creater;
     private int requestCode;
+    private boolean signStarted;
 
+    private WifiManager wifiManager;
+    private SignService signService;
+    private SignService.SignServiceListener listener = new SignService.SignServiceListener() {
+        @Override
+        public void onFinish(final String m) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (m != null) {
+                        toast(m);
+                    }
+                    startService(new Intent(ActivityInfo.this, SignService.class));
+                }
+            });
+        }
+    };
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            SignService.SignServiceBinder binder = (SignService.SignServiceBinder)iBinder;
+            signService = binder.getService();
+            signService.setListener(listener);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            signService = null;
+            bindSignService();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +104,26 @@ public class ActivityInfo
         onActivityInfo();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (signService != null) {
+            signService.setListener(null);
+            unbindService(serviceConnection);
+        }
+        if (signStarted) {
+            stopService(new Intent(ActivityInfo.this, SignService.class));
+        }
+    }
+
     private void initView() {
         setContentView(R.layout.activity_info);
 
         findViewById(R.id.title_number).setVisibility(View.INVISIBLE);
-        findViewById(R.id.title_task).setVisibility(View.INVISIBLE);
         TextView tvTitleName = findViewById(R.id.title_name);
-        tvTitleName.setText("详情");
+        tvTitleName.setText("活动详情");
+        ivTask = findViewById(R.id.title_task);
+        ivTask.setOnClickListener(this);
 
         tvName = findViewById(R.id.tv_name);
         tvPlace = findViewById(R.id.tv_place);
@@ -95,6 +148,7 @@ public class ActivityInfo
         recyclerView.setLayoutManager(new LinearLayoutManager(ActivityInfo.this));
 
         requestCode = 0;
+        signStarted = false;
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
     }
@@ -102,11 +156,26 @@ public class ActivityInfo
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.title_task:
+                EditActivity.actionActivity(ActivityInfo.this);
+                break;
             case R.id.bt_signin:
                 if (creater.equals(User.getAccount())) {
                     // 打开服务器
+                    if (!signStarted) {
+                        signStarted = true;
+                        bindSignService();
+                        startService(new Intent(ActivityInfo.this, SignService.class));
+                        btSignin.setText("停止签到");
+                    } else {
+                        signStarted = false;
+                        unbindService(serviceConnection);
+                        stopService(new Intent(ActivityInfo.this, SignService.class));
+                        btSignin.setText("开始签到");
+                    }
                 } else {
                     // 搜索、连接
+                    new SignTask(User.getAccount()).execute(getIP());
                 }
                 break;
             case R.id.bt_add_user:
@@ -145,9 +214,12 @@ public class ActivityInfo
                                 if (creater.equals(User.getAccount())) {
                                     requestCode = 1;
                                     btSignin.setText("开始签到");
+                                    bindSignService();
                                 } else {
                                     requestCode = 0;
                                     btAddUser.setVisibility(View.INVISIBLE);
+                                    btSignin.setText("签到");
+                                    wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                                 }
 
                                 JSONArray array = new JSONArray(data.getString("participant"));
@@ -191,6 +263,16 @@ public class ActivityInfo
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String time = sdf.format(new Date(Long.valueOf(timestamp)));
         return time;
+    }
+
+    private void bindSignService() {
+        Intent intent = new Intent(ActivityInfo.this, SignService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    private String getIP() {
+        int ip = wifiManager.getDhcpInfo().serverAddress;
+        return (0xff & ip) + "." + (0xff & ip >> 8) + "." + (0xff & ip >> 16) + "." + (0xff & ip >> 24);
     }
 
     public static void actionActivity(Context context, String activityID) {
