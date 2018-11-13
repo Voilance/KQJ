@@ -78,6 +78,7 @@ public class ActivityFragment
                                 JSONArray array = new JSONArray(data.getString("activity"));
                                 for (int i = 0; i < array.length(); i++) {
                                     JSONObject object = array.getJSONObject(i);
+                                    Log.e(TAG, "activity detail:" + object.toString());
                                     String name = object.getString("activity_name");
                                     String id = object.getString("activity_id");
                                     String creater = object.getString("creater");

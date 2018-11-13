@@ -47,6 +47,7 @@ public class CreateActivity
     private String startTime;
     private String endDate;
     private String endTime;
+    private String info;
     private DatePickerDialog.OnDateSetListener onStartDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -199,6 +200,10 @@ public class CreateActivity
             toast("签到截止时间不可以早于活动开始时间");
             return false;
         }
+        info = etInfo.getText().toString().trim();
+        if (info == null || info.length() == 0) {
+            info = "没有简介。";
+        }
         return true;
     }
 
@@ -254,6 +259,7 @@ public class CreateActivity
             data.put("place", place);
             data.put("time", String.valueOf(getTimestamp(startDate, startTime)));
             data.put("endtime", String.valueOf(getTimestamp(endDate, endTime)));
+            data.put("info", info);
             data.put("creater", User.getAccount());
             data.put("participant", User.getAccount());
         } catch (JSONException e) {

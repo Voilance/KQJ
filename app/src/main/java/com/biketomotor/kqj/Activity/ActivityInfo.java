@@ -57,6 +57,7 @@ public class ActivityInfo
     private String place;
     private String startTime;
     private String endTime;
+    private String info;
     private String creater;
     private int requestCode;
     private boolean signStarted;
@@ -92,6 +93,7 @@ public class ActivityInfo
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +103,7 @@ public class ActivityInfo
     @Override
     protected void onResume() {
         super.onResume();
+        MainActivity.editView();
         onActivityInfo();
     }
 
@@ -124,6 +127,7 @@ public class ActivityInfo
         tvTitleName.setText("活动详情");
         ivTask = findViewById(R.id.title_task);
         ivTask.setOnClickListener(this);
+        ivTask.setVisibility(View.INVISIBLE);
 
         tvName = findViewById(R.id.tv_name);
         tvPlace = findViewById(R.id.tv_place);
@@ -157,7 +161,7 @@ public class ActivityInfo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.title_task:
-                EditActivity.actionActivity(ActivityInfo.this);
+                EditActivity.actionActivity(ActivityInfo.this, id, name, place, startTime, endTime, info, creater);
                 break;
             case R.id.bt_signin:
                 if (creater.equals(User.getAccount())) {
@@ -204,16 +208,19 @@ public class ActivityInfo
                                 place = data.getString("activity_place");
                                 startTime = data.getString("activity_time");
                                 endTime = data.getString("activity_endTime");
+                                info = data.getString("activity_info");
                                 creater = data.getString("creater");
 
                                 tvName.setText(name);
                                 tvPlace.setText(place);
                                 tvStartTime.setText("正式开始时间:" + getTime(startTime));
                                 tvEndTime.setText("签到截止时间:" + getTime(endTime));
+                                tvInfo.setText(info);
 
                                 if (creater.equals(User.getAccount())) {
                                     requestCode = 1;
                                     btSignin.setText("开始签到");
+                                    ivTask.setVisibility(View.VISIBLE);
                                     bindSignService();
                                 } else {
                                     requestCode = 0;
