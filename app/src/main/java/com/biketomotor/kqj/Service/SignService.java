@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 
 public class SignService extends IntentService {
     private static final String TAG = "TagSignService";
@@ -23,11 +24,14 @@ public class SignService extends IntentService {
     }
 
     public interface SignServiceListener {
-        void onFinish(String m);
+        void onConnect(String m);
+        void onDisconnect(String m);
+        void onFinish();
     }
 
     private static final int PORT = 2313;
     private String msg;
+    private boolean connectFlag;
     private SignServiceListener listener;
 
     @Nullable
@@ -42,28 +46,46 @@ public class SignService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        try (ServerSocket sSocket = new ServerSocket()) {
-            sSocket.setReuseAddress(true);
-            sSocket.bind(new InetSocketAddress(PORT));
+        while (connectFlag) {
+            Log.e(TAG, "while");
             try (
-                    Socket cSocket = sSocket.accept();
-                    InputStream inputStream = cSocket.getInputStream();
-                    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                    ServerSocket sSocket = new ServerSocket();
             ) {
-                msg = (String)objectInputStream.readObject();
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "onHandleIntent:" + e.toString());
-        } finally {
-            if (listener != null) {
-                listener.onFinish(msg);
+                Log.e(TAG, "try0");
+                sSocket.setReuseAddress(true);
+                sSocket.bind(new InetSocketAddress(PORT));
+                try (
+                        Socket cSocket = sSocket.accept();
+                        InputStream inputStream = cSocket.getInputStream();
+                        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                ) {
+                    Log.e(TAG, "try1");
+                    msg = (String)objectInputStream.readObject();
+                    if (listener != null) {
+                        listener.onConnect(msg);
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "onHandleIntent:" + e.toString());
+                if (listener != null) {
+                    listener.onDisconnect(null);
+                }
+                break;
             }
         }
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (listener != null) {
+            listener.onFinish();
+        }
+    }
+
+    public void setConnectFlag(boolean flag) {
+        this.connectFlag = flag;
     }
 
     public void setListener(SignServiceListener listener) {

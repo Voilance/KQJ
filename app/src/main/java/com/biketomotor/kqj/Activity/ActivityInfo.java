@@ -24,6 +24,7 @@ import com.biketomotor.kqj.Interface.HttpsListener;
 import com.biketomotor.kqj.R;
 import com.biketomotor.kqj.Service.SignService;
 import com.biketomotor.kqj.Task.SignTask;
+import com.biketomotor.kqj.Thread.SignThread;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +32,9 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class ActivityInfo
@@ -61,19 +64,76 @@ public class ActivityInfo
     private String creater;
     private int requestCode;
     private boolean signStarted;
+    private HashMap<String, Long> signMap;
 
     private WifiManager wifiManager;
-    private SignService signService;
-    private SignService.SignServiceListener listener = new SignService.SignServiceListener() {
+    private SignThread signThread;
+    private SignThread.SignThreadListener cListener = new SignThread.SignThreadListener() {
         @Override
-        public void onFinish(final String m) {
+        public void onFinished(final String m) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (m != null) {
-                        toast(m);
+                    btSignin.setText(m);
+                }
+            });
+        }
+    };
+    private SignService signService;
+    private SignService.SignServiceListener sListener = new SignService.SignServiceListener() {
+        @Override
+        public void onConnect(final String m) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    long curTime = Calendar.getInstance().getTimeInMillis();
+                    for (String key : signMap.keySet()) {
+                        long t = signMap.get(key);
+                        if (curTime > (t + 30000)) { // 离开超过30s
+                            HttpsUtil.sendPostRequest(HttpsUtil.userLeftAddr, getJsonDataForSign(key), new HttpsListener() {
+                                @Override
+                                public void onSuccess(String response) {
+
+                                }
+
+                                @Override
+                                public void onFailure(Exception exception) {
+
+                                }
+                            });
+                            signMap.remove(key);
+                        }
                     }
-                    startService(new Intent(ActivityInfo.this, SignService.class));
+                    if (signMap.get(m) == null) { // 新到同学
+                        signMap.put(m, curTime);
+                        HttpsUtil.sendPostRequest(HttpsUtil.userArriveAddr, getJsonDataForSign(m), new HttpsListener() {
+                            @Override
+                            public void onSuccess(String response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Exception exception) {
+
+                            }
+                        });
+                    } else {
+                        signMap.put(m, curTime);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onDisconnect(final String m) {
+        }
+
+        @Override
+        public void onFinish() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    toast("finished");
                 }
             });
         }
@@ -83,11 +143,12 @@ public class ActivityInfo
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             SignService.SignServiceBinder binder = (SignService.SignServiceBinder)iBinder;
             signService = binder.getService();
-            signService.setListener(listener);
+            signService.setListener(sListener);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
+            Log.e(TAG, "onServiceDisconnected: ");
             signService = null;
             bindSignService();
         }
@@ -155,6 +216,9 @@ public class ActivityInfo
         signStarted = false;
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
+
+        signThread = new SignThread();
+        signThread.setListener(cListener);
     }
 
     @Override
@@ -168,18 +232,28 @@ public class ActivityInfo
                     // 打开服务器
                     if (!signStarted) {
                         signStarted = true;
+                        signMap = new HashMap<>();
+                        signService.setConnectFlag(true);
                         bindSignService();
                         startService(new Intent(ActivityInfo.this, SignService.class));
                         btSignin.setText("停止签到");
                     } else {
                         signStarted = false;
+                        signService.setConnectFlag(false);
                         unbindService(serviceConnection);
                         stopService(new Intent(ActivityInfo.this, SignService.class));
                         btSignin.setText("开始签到");
                     }
                 } else {
                     // 搜索、连接
-                    new SignTask(User.getAccount()).execute(getIP());
+                    if (!signStarted) {
+                        signStarted = true;
+                        signThread.setConnectFlag(true);
+                        signThread.sign(getIP());
+                    } else {
+                        signStarted = false;
+                        signThread.setConnectFlag(false);
+                    }
                 }
                 break;
             case R.id.bt_add_user:
@@ -262,6 +336,16 @@ public class ActivityInfo
             data.put("id", id);
         } catch (JSONException e) {
             Log.e(TAG, "getJsonData:" + e.toString());
+        }
+        return data;
+    }
+
+    private JSONObject getJsonDataForSign(String account) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("account", account);
+        } catch (JSONException e) {
+            Log.e(TAG, "getJsonDataForSign:" + e.toString());
         }
         return data;
     }
