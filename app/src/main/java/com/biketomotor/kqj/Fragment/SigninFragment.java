@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class SigninFragment
@@ -32,9 +33,10 @@ public class SigninFragment
     private static TextView tvName;
     private static Button btSignin;
 
-    private static String id;
-    private static String name;
-    private static String startTime;
+    private static String id = "";
+    private static String name = "";
+    private static String startTime = "";
+    private static String endTime = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,10 +47,6 @@ public class SigninFragment
         tvTips = view.findViewById(R.id.tv_tips);
         btSignin = view.findViewById(R.id.bt_signin);
         btSignin.setOnClickListener(this);
-
-        id = "";
-        name = "";
-        startTime = "";
 
         return view;
     }
@@ -62,7 +60,13 @@ public class SigninFragment
         switch (v.getId()) {
             case R.id.bt_signin:
                 if (id.length() != 0) {
-                    ActivityInfo.actionActivity(mainActivity, id);
+                    long cT = Calendar.getInstance().getTimeInMillis();
+                    long eT = Long.valueOf(endTime);
+                    if (cT < eT) { // 活动还没结束
+                        ActivityInfo.actionActivity(mainActivity, id);
+                    } else {
+                        onActivityPassed();
+                    }
                 }
                 break;
             default:
@@ -71,28 +75,41 @@ public class SigninFragment
     }
 
     private static void onUrgentActivity() {
-        HttpsUtil.sendPostRequest(HttpsUtil.urgentActivityAddr, getJsonData(), new HttpsListener() {
+        HttpsUtil.sendPostRequest(HttpsUtil.urgentActivityAddr, getJsonDataForUrgentActivity(), new HttpsListener() {
             @Override
             public void onSuccess(final String response) {
                 mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            Log.e(TAG, response);
                             JSONObject data = new JSONObject(response);
                             String result = data.getString("result");
                             if (result.equals("true")) {
+                                Log.e(TAG, response);
                                 id = data.getString("id");
                                 name = data.getString("name");
                                 startTime = data.getString("time");
+                                endTime = data.getString("endTime");
                                 tvName.setText(name);
-                                btSignin.setText("签到\n" + getTime(startTime));
+                                long cT = Calendar.getInstance().getTimeInMillis();
+                                long sT = Long.valueOf(startTime);
+                                if ((cT + 1800000) < sT) {
+                                    tvTips.setText("淡定~大兄弟");
+                                    btSignin.setText("签到\n" + getTime(startTime));
+                                } else if ((cT + 1800000) > sT && cT < sT) {
+                                    tvTips.setText("跑起来~兄嘚");
+                                    btSignin.setText("签到\n" + getTime(startTime));
+                                } else {
+                                    tvTips.setText("怎么萎事啊小老弟？");
+                                    btSignin.setText("活动开始了\n" + getTime(startTime));
+                                }
                             } else {
                                 id = "";
                                 name = "";
                                 startTime = "";
+                                endTime = "";
                                 tvName.setText("暂无活动");
-                                btSignin.setText("闲");
+                                btSignin.setText("真闲呐~");
                             }
                         } catch (JSONException e) {
                             Log.e(TAG, "onUrgentActivity/onSuccess:" + e.toString());
@@ -108,12 +125,43 @@ public class SigninFragment
         });
     }
 
-    private static JSONObject getJsonData() {
+    private static JSONObject getJsonDataForUrgentActivity() {
         JSONObject data = new JSONObject();
         try {
             data.put("participant", User.getAccount());
         } catch (JSONException e) {
             Log.e(TAG, "getJsonData:" + e.toString());
+        }
+        return data;
+    }
+
+    private void onActivityPassed() {
+        HttpsUtil.sendPostRequest(HttpsUtil.activityPassedAddr, getJsonDataForActivityPassed(), new HttpsListener() {
+            @Override
+            public void onSuccess(final String response) {
+                mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(TAG, "hi");
+                        onUrgentActivity();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                Log.e(TAG, "onActivityPassed/onFailure:" + exception.toString());
+            }
+        });
+    }
+
+    private JSONObject getJsonDataForActivityPassed() {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("participant", User.getAccount());
+            data.put("id", id);
+        } catch (JSONException e) {
+            Log.e(TAG, "getJsonDataForActivityPassed:" + e.toString());
         }
         return data;
     }

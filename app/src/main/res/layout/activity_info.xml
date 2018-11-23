@@ -107,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:text="活动简介:\n苟\n利\n国\n家\n生\n死\n以\n，\n岂\n因\n祸\n福\n避\n趋\n之\n。"/>
+                android:text="暂无简介"/>
 
         </ScrollView>
 

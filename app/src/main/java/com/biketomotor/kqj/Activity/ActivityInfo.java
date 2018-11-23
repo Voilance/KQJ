@@ -86,6 +86,8 @@ public class ActivityInfo
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    toast(m);
+                    Log.e(TAG, "account" + m);
                     long curTime = Calendar.getInstance().getTimeInMillis();
                     for (String key : signMap.keySet()) {
                         long t = signMap.get(key);
@@ -344,6 +346,7 @@ public class ActivityInfo
         JSONObject data = new JSONObject();
         try {
             data.put("account", account);
+            data.put("activity_id", id);
         } catch (JSONException e) {
             Log.e(TAG, "getJsonDataForSign:" + e.toString());
         }
