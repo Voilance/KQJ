@@ -3,10 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <TextView
+    
+    <LinearLayout
+        android:id="@+id/ll_week_list"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="课程表"/>
+        android:layout_centerHorizontal="true">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="第一周"
+            android:textSize="15sp"
+            android:textColor="#579CCF"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/drop_triangle"/>
+        
+    </LinearLayout>
+
+    <com.biketomotor.kqj.View.CourseDateView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/ll_week_list"/>
 
 </RelativeLayout>

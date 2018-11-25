@@ -23,7 +23,6 @@ import com.biketomotor.kqj.Class.UserItem;
 import com.biketomotor.kqj.Interface.HttpsListener;
 import com.biketomotor.kqj.R;
 import com.biketomotor.kqj.Service.SignService;
-import com.biketomotor.kqj.Task.SignTask;
 import com.biketomotor.kqj.Thread.SignThread;
 
 import org.json.JSONArray;
