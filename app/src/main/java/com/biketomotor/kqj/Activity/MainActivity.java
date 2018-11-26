@@ -188,7 +188,7 @@ public class MainActivity
                 SearchUserActivity.actionActivity(MainActivity.this, "", 0);
                 break;
             case 1:
-                toast("添加课程");
+                AddCourseActivity.actionActivity(MainActivity.this);
                 break;
             case 3:
                 CreateActivity.actionActivity(MainActivity.this);

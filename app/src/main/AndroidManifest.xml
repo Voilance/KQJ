@@ -52,7 +52,8 @@
             android:name=".Service.SignService"
             android:exported="false" />
 
-        <activity android:name=".Activity.EditActivity"></activity>
+        <activity android:name=".Activity.EditActivity" />
+        <activity android:name=".Activity.AddCourseActivity"></activity>
     </application>
 
 </manifest>
