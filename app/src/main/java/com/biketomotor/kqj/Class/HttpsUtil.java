@@ -24,6 +24,9 @@ public class HttpsUtil {
     public static final String deleteActivityAddr = "https://app.biketomotor.cn/api/DeleteActivity";
     public static final String userArriveAddr = "https://app.biketomotor.cn/api/UserArrived";
     public static final String userLeftAddr = "https://app.biketomotor.cn/api/UserLeft";
+    public static final String getCourseAddr = "https://app.biketomotor.cn/course/GetCourseList";
+    public static final String deleteCourseAddr = "https://app.biketomotor.cn/course/DeleteCourse";
+    public static final String setCurWeekAddr = "https://app.biketomotor.cn/course/SetCurrentWeek";
 
     public static void sendPostRequest(
             final String address,

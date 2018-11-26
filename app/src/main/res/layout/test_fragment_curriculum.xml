@@ -30,7 +30,7 @@
                 android:background="@color/colorGray"/>
 
             <TextView
-                android:id="@+id/tv_month"
+                android:id="@+id/tv_week"
                 android:layout_toRightOf="@id/v2"
                 android:layout_toLeftOf="@id/v3"
                 android:layout_width="match_parent"
@@ -417,11 +417,14 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_curriculum"
+            <GridLayout
+                android:id="@+id/gl_curriculum"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="7"></RelativeLayout>
+                android:layout_weight="7"
+                android:columnCount="7"
+                android:orientation="vertical"
+                android:rowCount="11"></GridLayout>
 
         </LinearLayout>
 

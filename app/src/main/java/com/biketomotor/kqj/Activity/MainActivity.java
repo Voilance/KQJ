@@ -199,6 +199,7 @@ public class MainActivity
     }
 
     public static void editView() {
+        CurriculumFragment.editView();
         SigninFragment.editView();
         ActivityFragment.editView();
         MineFragment.editView();
