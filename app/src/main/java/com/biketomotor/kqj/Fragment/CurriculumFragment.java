@@ -15,11 +15,9 @@ import com.biketomotor.kqj.Class.User;
 import com.biketomotor.kqj.Interface.HttpsListener;
 import com.biketomotor.kqj.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.microedition.khronos.opengles.GL;
 
 public class CurriculumFragment
         extends Fragment implements View.OnClickListener {
@@ -65,7 +63,7 @@ public class CurriculumFragment
         }
     }
 
-    private static void setChildView() {
+    private static void initChildView() {
         height = curriculum.getHeight() / row;
         width = curriculum.getWidth() / col;
         for (int i = 0; i < col; i++) {
@@ -81,17 +79,19 @@ public class CurriculumFragment
         }
     }
 
+    private void addChildView(int w, int h, int c, int r) {
+
+    }
+
     private static void getCourseList() {
-        HttpsUtil.sendPostRequest(HttpsUtil.getCourseAddr, getJsonData(), new HttpsListener() {
+        HttpsUtil.sendPostRequest(HttpsUtil.getCourseAddr, getJsonDataForCourseList(), new HttpsListener() {
             @Override
             public void onSuccess(final String response) {
                 mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Log.e(TAG, "getCourseList/run: " + response);
-                        setChildView();
-//                        height = curriculum.getHeight() / row;
-//                        width = curriculum.getWidth() / col;
+                        initChildView();
                     }
                 });
             }
@@ -103,7 +103,7 @@ public class CurriculumFragment
         });
     }
 
-    private static JSONObject getJsonData() {
+    private static JSONObject getJsonDataForCourseList() {
         JSONObject data = new JSONObject();
         try {
             data.put("stu_id", User.getAccount());
@@ -111,6 +111,15 @@ public class CurriculumFragment
         } catch (JSONException e) {
             Log.e(TAG, "getJsonData:" + e.toString());
         }
+        return data;
+    }
+
+//    private void addCourse() {
+//        HttpsUtil.sendPostRequest();
+//    }
+
+    private JSONObject getJsonDataForAddCourse() {
+        JSONObject data = new JSONObject();
         return data;
     }
 }
