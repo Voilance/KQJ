@@ -16,7 +16,7 @@
         android:padding="10dp"
         android:gravity="center"
         android:hint="课程名称"
-        android:textColor="@color/colorCursor"
+        android:textColor="#000000"
         android:textCursorDrawable="@drawable/color_cursor"
         android:background="@null"
         android:singleLine="true"
@@ -74,7 +74,7 @@
                         android:singleLine="true"
                         android:hint="输入上课教室"
                         android:textSize="20sp"
-                        android:textColor="@color/colorCursor"
+                        android:textColor="#000000"
                         android:textCursorDrawable="@drawable/color_cursor"/>
                     
                 </LinearLayout>
@@ -108,9 +108,9 @@
                         android:gravity="center"
                         android:background="@null"
                         android:singleLine="true"
-                        android:hint="输入上课教师"
+                        android:hint="输入任课教师"
                         android:textSize="20sp"
-                        android:textColor="@color/colorCursor"
+                        android:textColor="#000000"
                         android:textCursorDrawable="@drawable/color_cursor"/>
 
                 </LinearLayout>
@@ -146,7 +146,7 @@
                         android:singleLine="true"
                         android:hint="选择上课周数"
                         android:textSize="20sp"
-                        android:textColor="@color/colorCursor"
+                        android:textColor="#000000"
                         android:textCursorDrawable="@drawable/color_cursor"/>
 
                 </LinearLayout>
@@ -182,7 +182,7 @@
                         android:singleLine="true"
                         android:hint="选择上课周天"
                         android:textSize="20sp"
-                        android:textColor="@color/colorCursor"
+                        android:textColor="#000000"
                         android:textCursorDrawable="@drawable/color_cursor"/>
 
                 </LinearLayout>
@@ -208,7 +208,7 @@
                         android:background="@color/colorCursor"/>
 
                     <TextView
-                        android:id="@+id/tv_start_time"
+                        android:id="@+id/tv_start_lesson"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_weight="1"
@@ -216,9 +216,9 @@
                         android:gravity="center"
                         android:background="@null"
                         android:singleLine="true"
-                        android:hint="选择上课时间"
+                        android:hint="选择上课节次"
                         android:textSize="20sp"
-                        android:textColor="@color/colorCursor"
+                        android:textColor="#000000"
                         android:textCursorDrawable="@drawable/color_cursor"/>
 
                 </LinearLayout>
@@ -244,7 +244,7 @@
                         android:background="@color/colorCursor"/>
 
                     <TextView
-                        android:id="@+id/tv_end_time"
+                        android:id="@+id/tv_end_lesson"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_weight="1"
@@ -252,9 +252,9 @@
                         android:gravity="center"
                         android:background="@null"
                         android:singleLine="true"
-                        android:hint="选择下课时间"
+                        android:hint="选择下课节次"
                         android:textSize="20sp"
-                        android:textColor="@color/colorCursor"
+                        android:textColor="#000000"
                         android:textCursorDrawable="@drawable/color_cursor"/>
 
                 </LinearLayout>
