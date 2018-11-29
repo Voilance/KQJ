@@ -142,8 +142,7 @@ public class SigninFragment
                 mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.e(TAG, "hi");
-                        onUrgentActivity();
+                        MainActivity.editView();
                     }
                 });
             }

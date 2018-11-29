@@ -46,33 +46,23 @@
         android:layout_below="@id/rl_search_user"
         android:background="@color/colorCursor"/>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/v1"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentBottom="true">
+    <!--<RelativeLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/v1"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_alignParentBottom="true">-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_user_list"
+            android:layout_below="@id/v1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/bt_add_all"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="#ffffff"/>
 
-        <Button
-            android:id="@+id/bt_add_all"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="80dp"
-            android:gravity="center"
-            android:text="全部添加"
-            android:textSize="16dp"/>
-
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
 </RelativeLayout>

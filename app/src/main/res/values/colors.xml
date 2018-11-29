@@ -21,4 +21,8 @@
     <color name="registerButtonBackground">#004684</color>
     <color name="registerButtonText">#fff</color>
 
+    <color name="colorRed">#F81431</color>
+    <color name="colorYellow">#F8F227</color>
+    <color name="colorGreen">#00FF00</color>
+
 </resources>

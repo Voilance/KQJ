@@ -1,6 +1,7 @@
 package com.biketomotor.kqj.Adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class UserItemAdapter
         extends RecyclerView.Adapter<UserItemAdapter.ViewHolder> {
+    private static final String TAG = "TagUserItemAdapter";
 
     class ViewHolder
             extends RecyclerView.ViewHolder {
@@ -29,6 +31,7 @@ public class UserItemAdapter
 
     public interface onItemClickListener {
         void onItemClick(int position);
+        void onItemLongClick(int position);
     }
 
     private List<UserItem> userItemList;
@@ -47,6 +50,15 @@ public class UserItemAdapter
                 if (clickListener != null) {
                     clickListener.onItemClick((Integer)v.getTag());
                 }
+            }
+        });
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (clickListener != null) {
+                    clickListener.onItemLongClick((Integer)v.getTag());
+                }
+                return true;
             }
         });
         return new ViewHolder(view);

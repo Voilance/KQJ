@@ -1,5 +1,6 @@
 package com.biketomotor.kqj.Activity;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -64,6 +65,7 @@ public class ActivityInfo
     private int requestCode;
     private boolean signStarted;
     private HashMap<String, Long> signMap;
+    private AlertDialog recordsDialog;
 
     private WifiManager wifiManager;
     private SignThread signThread;
@@ -208,6 +210,17 @@ public class ActivityInfo
             @Override
             public void onItemClick(int position) {
                 UserInfo.actionActivity(ActivityInfo.this, userItemList.get(position).getAccount(), id, requestCode);
+            }
+
+            @Override
+            public void onItemLongClick(int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityInfo.this);
+                builder.setTitle(userItemList.get(position).getRealname() + "到课情况");
+                builder.setMessage("09:00 到  09:10 走" + "\n" +
+                "09:15 到  09:20 走" + "\n" +
+                "09:21 到");
+                recordsDialog = builder.create();
+                recordsDialog.show();
             }
         });
         recyclerView.setAdapter(userItemAdapter);

@@ -184,8 +184,6 @@ public class CurriculumFragment
                                 CourseList.initCourseList(data);
                                 initChildView();
                                 addChildView();
-                            } else {
-                                Toast.makeText(mainActivity, reason, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             Log.e(TAG, "getCourseList/onSuccess:" + e.toString());
