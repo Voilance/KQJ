@@ -25,8 +25,10 @@ public class HttpsUtil {
     public static final String userArriveAddr = "https://app.biketomotor.cn/api/UserArrived";
     public static final String userLeftAddr = "https://app.biketomotor.cn/api/UserLeft";
     public static final String getCourseAddr = "https://app.biketomotor.cn/course/GetCourseList";
+    public static final String getAllCourseAddr = "https://app.biketomotor.cn/course/GetCourseAll";
     public static final String addCourseAddr = "https://app.biketomotor.cn/course/AddCourse";
     public static final String deleteCourseAddr = "https://app.biketomotor.cn/course/DeleteCourse";
+    public static final String editCourseAddr = "https://app.biketomotor.cn/course/EditCourse";
     public static final String setCurWeekAddr = "https://app.biketomotor.cn/course/SetCurrentWeek";
 
     public static void sendPostRequest(

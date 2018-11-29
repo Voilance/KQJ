@@ -1,7 +1,7 @@
 package com.biketomotor.kqj.Class;
 
 public class User {
-    private static final String TAG = "User";
+    private static final String TAG = "TagUser";
 
     private static String account = "";
     private static String password = "";

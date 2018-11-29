@@ -53,7 +53,8 @@
             android:exported="false" />
 
         <activity android:name=".Activity.EditActivity" />
-        <activity android:name=".Activity.AddCourseActivity"></activity>
+        <activity android:name=".Activity.AddCourseActivity" />
+        <activity android:name=".Activity.EditCourse"></activity>
     </application>
 
 </manifest>
