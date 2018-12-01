@@ -63,7 +63,7 @@ public class SigninFragment
                     long cT = Calendar.getInstance().getTimeInMillis();
                     long eT = Long.valueOf(endTime);
                     if (cT < eT) { // 活动还没结束
-                        ActivityInfo.actionActivity(mainActivity, id);
+                        ActivityInfo.actionActivity(mainActivity, id, 0);
                     } else {
                         onActivityPassed();
                     }

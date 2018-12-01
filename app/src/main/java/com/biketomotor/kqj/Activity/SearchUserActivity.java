@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.biketomotor.kqj.Class.HttpsUtil;
+import com.biketomotor.kqj.Class.User;
 import com.biketomotor.kqj.Interface.HttpsListener;
 import com.biketomotor.kqj.R;
 
@@ -34,6 +36,11 @@ public class SearchUserActivity
 
     private void initView() {
         setContentView(R.layout.search_user);
+
+        findViewById(R.id.title_number).setVisibility(View.INVISIBLE);
+        findViewById(R.id.title_task).setVisibility(View.INVISIBLE);
+        TextView tvTitleName = findViewById(R.id.title_name);
+        tvTitleName.setText("搜索用户");
 
         etAccount = findViewById(R.id.et_search_user);
         btSearch = findViewById(R.id.bt_search_user);
@@ -107,6 +114,7 @@ public class SearchUserActivity
         JSONObject data = new JSONObject();
         try {
             data.put("account", account);
+            data.put("stu_id", User.getAccount());
         } catch (JSONException e) {
             Log.e(TAG, "getJsonData:" + e.toString());
         }

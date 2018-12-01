@@ -24,5 +24,6 @@
     <color name="colorRed">#F81431</color>
     <color name="colorYellow">#F8F227</color>
     <color name="colorGreen">#00FF00</color>
+    <color name="colorBlack">#000000</color>
 
 </resources>

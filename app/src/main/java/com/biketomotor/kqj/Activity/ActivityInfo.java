@@ -62,7 +62,9 @@ public class ActivityInfo
     private String endTime;
     private String info;
     private String creater;
+    private String supervisor;
     private int requestCode;
+    private int isSupervisor;
     private boolean signStarted;
     private HashMap<String, Long> signMap;
     private AlertDialog recordsDialog;
@@ -76,6 +78,7 @@ public class ActivityInfo
                 @Override
                 public void run() {
                     btSignin.setText(m);
+                    onUserStatus();
                 }
             });
         }
@@ -88,38 +91,26 @@ public class ActivityInfo
                 @Override
                 public void run() {
                     toast(m);
-                    Log.e(TAG, "account" + m);
+                    btSignin.setText("停止签到");
                     long curTime = Calendar.getInstance().getTimeInMillis();
-                    for (String key : signMap.keySet()) {
+                    for (final String key : signMap.keySet()) {
                         long t = signMap.get(key);
                         if (curTime > (t + 30000)) { // 离开超过30s
-                            HttpsUtil.sendPostRequest(HttpsUtil.userLeftAddr, getJsonDataForSign(key), new HttpsListener() {
-                                @Override
-                                public void onSuccess(String response) {
-
-                                }
-
-                                @Override
-                                public void onFailure(Exception exception) {
-
-                                }
-                            });
+                            toast("send left");
+                            HttpsUtil.sendPostRequest(HttpsUtil.userLeftAddr, getJsonDataForSign(key), null);
+                            toast("update status");
+                            onUserStatus();
+                            toast("over");
                             signMap.remove(key);
                         }
                     }
                     if (signMap.get(m) == null) { // 新到同学
                         signMap.put(m, curTime);
-                        HttpsUtil.sendPostRequest(HttpsUtil.userArriveAddr, getJsonDataForSign(m), new HttpsListener() {
-                            @Override
-                            public void onSuccess(String response) {
-
-                            }
-
-                            @Override
-                            public void onFailure(Exception exception) {
-
-                            }
-                        });
+                        toast("send arrive");
+                        HttpsUtil.sendPostRequest(HttpsUtil.userArriveAddr, getJsonDataForSign(m), null);
+                        toast("update status");
+                        onUserStatus();
+                        toast("over");
                     } else {
                         signMap.put(m, curTime);
                     }
@@ -137,6 +128,7 @@ public class ActivityInfo
                 @Override
                 public void run() {
                     toast("finished");
+                    btSignin.setText("开始签到");
                 }
             });
         }
@@ -214,13 +206,49 @@ public class ActivityInfo
 
             @Override
             public void onItemLongClick(int position) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityInfo.this);
-                builder.setTitle(userItemList.get(position).getRealname() + "到课情况");
-                builder.setMessage("09:00 到  09:10 走" + "\n" +
-                "09:15 到  09:20 走" + "\n" +
-                "09:21 到");
-                recordsDialog = builder.create();
-                recordsDialog.show();
+                final int posi = position;
+                HttpsUtil.sendPostRequest(HttpsUtil.userClockInfoAddr, getJsonDataForRecord(userItemList.get(position).getAccount()), new HttpsListener() {
+                    @Override
+                    public void onSuccess(final String response) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    JSONObject data = new JSONObject(response);
+                                    String result = data.getString("result");
+                                    String reason = data.getString("reason");
+                                    if (result.equals("true")) {
+                                        String records = "";
+                                        JSONArray array = new JSONArray(data.getString("records"));
+                                        for (int i = 0; i < array.length(); i++) {
+                                            JSONObject object = array.getJSONObject(i);
+                                            String io = object.getString("inorout");
+                                            String time = getTime(object.getString("time"));
+                                            if (io.equals("in")) {
+                                                records = records + "到    :";
+                                            } else {
+                                                records = records + "    走:";
+                                            }
+                                            records = records + time + "\n";
+                                        }
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityInfo.this);
+                                        builder.setTitle(userItemList.get(posi).getRealname() + "到课情况");
+                                        builder.setMessage(records);
+                                        recordsDialog = builder.create();
+                                        recordsDialog.show();
+                                    }
+                                } catch (JSONException e) {
+                                    Log.e(TAG, "userClockInfo/onSuccess:" + e.toString());
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception exception) {
+                        Log.e(TAG, "userClockInfo/onFailure:" + exception.toString());
+                    }
+                });
             }
         });
         recyclerView.setAdapter(userItemAdapter);
@@ -230,6 +258,11 @@ public class ActivityInfo
         signStarted = false;
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
+        isSupervisor = intent.getIntExtra("isSupervisor", 0);
+        if (isSupervisor != 0) {
+            btSignin.setClickable(false);
+            btSignin.setVisibility(View.INVISIBLE);
+        }
 
         signThread = new SignThread();
         signThread.setListener(cListener);
@@ -239,7 +272,7 @@ public class ActivityInfo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.title_task:
-                EditActivity.actionActivity(ActivityInfo.this, id, name, place, startTime, endTime, info, creater);
+                EditActivity.actionActivity(ActivityInfo.this, id, name, place, startTime, endTime, info, creater, supervisor);
                 break;
             case R.id.bt_signin:
                 if (creater.equals(User.getAccount())) {
@@ -250,12 +283,14 @@ public class ActivityInfo
                         signService.setConnectFlag(true);
                         bindSignService();
                         startService(new Intent(ActivityInfo.this, SignService.class));
+                        HttpsUtil.sendPostRequest(HttpsUtil.userArriveAddr, getJsonDataForSign(User.getAccount()), null);
                         btSignin.setText("停止签到");
                     } else {
                         signStarted = false;
                         signService.setConnectFlag(false);
                         unbindService(serviceConnection);
                         stopService(new Intent(ActivityInfo.this, SignService.class));
+                        HttpsUtil.sendPostRequest(HttpsUtil.userLeftAddr, getJsonDataForSign(User.getAccount()), null);
                         btSignin.setText("开始签到");
                     }
                 } else {
@@ -286,7 +321,6 @@ public class ActivityInfo
                     @Override
                     public void run() {
                         try {
-                            Log.e(TAG, response);
                             JSONObject data = new JSONObject(response);
                             String result = data.getString("result");
                             String reason = data.getString("reason");
@@ -298,6 +332,7 @@ public class ActivityInfo
                                 endTime = data.getString("activity_endTime");
                                 info = data.getString("activity_info");
                                 creater = data.getString("creater");
+                                supervisor = data.getString("supervisor");
 
                                 tvName.setText(name);
                                 tvPlace.setText(place);
@@ -323,7 +358,8 @@ public class ActivityInfo
                                     String pName = object.getString("name");
                                     String pRealname = object.getString("realname");
                                     String pAccount = object.getString("account");
-                                    userItemList.add(new UserItem(pName, pRealname, pAccount));
+                                    String pStatus = object.getString("status");
+                                    userItemList.add(new UserItem(pName, pRealname, pAccount, pStatus));
                                 }
                             } else {
                                 toast(reason);
@@ -340,6 +376,43 @@ public class ActivityInfo
             @Override
             public void onFailure(Exception exception) {
                 Log.e(TAG, "onActivityInfo/onFailure:" + exception.toString());
+            }
+        });
+    }
+
+    private void onUserStatus() {
+        HttpsUtil.sendPostRequest(HttpsUtil.activityInfoAddr, getJsonData(), new HttpsListener() {
+            @Override
+            public void onSuccess(final String response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject data = new JSONObject(response);
+                            String result = data.getString("result");
+                            userItemList.clear();
+                            if (result.equals("true")) {
+                                JSONArray array = new JSONArray(data.getString("participant"));
+                                for (int i = 0; i < array.length(); i++) {
+                                    JSONObject object = array.getJSONObject(i);
+                                    String pName = object.getString("name");
+                                    String pRealname = object.getString("realname");
+                                    String pAccount = object.getString("account");
+                                    String pStatus = object.getString("status");
+                                    userItemList.add(new UserItem(pName, pRealname, pAccount, pStatus));
+                                }
+                            }
+                            userItemAdapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            Log.e(TAG, "onUserStatus/onSuccess:" + e.toString());
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                Log.e(TAG, "onUserStatus/onFailure:" + exception.toString());
             }
         });
     }
@@ -365,6 +438,17 @@ public class ActivityInfo
         return data;
     }
 
+    private JSONObject getJsonDataForRecord(String account) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("activity_id", id);
+            data.put("user_id", account);
+        } catch (JSONException e) {
+            Log.e(TAG, "getJsonDataForRecord:" + e.toString());
+        }
+        return data;
+    }
+
     private String getTime(String timestamp) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String time = sdf.format(new Date(Long.valueOf(timestamp)));
@@ -381,9 +465,10 @@ public class ActivityInfo
         return (0xff & ip) + "." + (0xff & ip >> 8) + "." + (0xff & ip >> 16) + "." + (0xff & ip >> 24);
     }
 
-    public static void actionActivity(Context context, String activityID) {
+    public static void actionActivity(Context context, String activityID, int isVisor) {
         Intent intent = new Intent(context, ActivityInfo.class);
         intent.putExtra("id", activityID);
+        intent.putExtra("isSupervisor", isVisor);
         context.startActivity(intent);
     }
 }

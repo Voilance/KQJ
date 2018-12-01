@@ -6,12 +6,12 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/rl_user"
+        android:id="@+id/rl_friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/civ_user_icon"
+            android:id="@+id/civ_friend_icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="15dp"
@@ -21,25 +21,26 @@
             android:src="@mipmap/app_icon"/>
 
         <TextView
-            android:id="@+id/tv_user_name"
+            android:id="@+id/tv_friend_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/civ_user_icon"
-            android:layout_toLeftOf="@id/tv_user_status"
+            android:layout_toRightOf="@id/civ_friend_icon"
+            android:layout_toLeftOf="@id/tv_friend_msg"
             android:layout_centerVertical="true"
             android:text="user name"
             android:textSize="18dp"
             android:textColor="#000000"/>
 
         <TextView
-            android:id="@+id/tv_user_status"
+            android:id="@+id/tv_friend_msg"
             android:layout_width="40dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
-            android:background="@color/colorLightBlue"/>
+            android:background="@color/colorRed"
+            android:visibility="invisible"/>
 
     </RelativeLayout>
 

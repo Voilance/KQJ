@@ -10,9 +10,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.biketomotor.kqj.Class.HttpsUtil;
+import com.biketomotor.kqj.Class.User;
 import com.biketomotor.kqj.Interface.HttpsListener;
 import com.biketomotor.kqj.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,11 +35,18 @@ public class UserInfo
     private String account;
     private String id;
     private int requestCode;
+    private boolean isFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MainActivity.editView();
     }
 
     private void initView() {
@@ -63,6 +72,7 @@ public class UserInfo
         account = intent.getStringExtra("account");
         id = intent.getStringExtra("id");
         requestCode = intent.getIntExtra("requestCode", 0);
+        isFriend = false;
 
         // 从ActivityInfo跳转过来邀请用户加入活动
         if (requestCode == 1) {
@@ -76,6 +86,11 @@ public class UserInfo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_add_friend:
+                if (!isFriend) {
+                    addFriend();
+                } else {
+                    deleteFriend();
+                }
                 break;
             case R.id.bt_invite:
                 inviteUser();
@@ -103,6 +118,14 @@ public class UserInfo
                                 tvAccount.setText(userInfo.getString("account"));
                                 tvRealname.setText("姓名:" + userInfo.getString("realname"));
                                 tvTel.setText("电话:" + userInfo.getString("telnumber"));
+                                String myFriend = data.getString("myFriend");
+                                if (myFriend.equals("true")) {
+                                    isFriend = true;
+                                    btAddFriend.setText("删除好友");
+                                } else {
+                                    isFriend = false;
+                                    btAddFriend.setText("添加好友");
+                                }
                             } else {
                                 toast(reason);
                             }
@@ -118,6 +141,17 @@ public class UserInfo
                 Log.e(TAG, "getUserInfo/OnFailure:" + exception.toString());
             }
         });
+    }
+
+    private JSONObject getJsonData() {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("account", account);
+            data.put("stu_id", User.getAccount());
+        } catch (JSONException e) {
+            Log.e(TAG, "getJsonData:" + e.toString());
+        }
+        return data;
     }
 
     private void inviteUser() {
@@ -152,16 +186,6 @@ public class UserInfo
         });
     }
 
-    private JSONObject getJsonData() {
-        JSONObject data = new JSONObject();
-        try {
-            data.put("account", account);
-        } catch (JSONException e) {
-            Log.e(TAG, "getJsonData:" + e.toString());
-        }
-        return data;
-    }
-
     private JSONObject getInviteJsonData() {
         JSONObject data = new JSONObject();
         try {
@@ -169,6 +193,57 @@ public class UserInfo
             data.put("id", id);
         } catch (JSONException e) {
             Log.e(TAG, "getJsonData:" + e.toString());
+        }
+        return data;
+    }
+
+    private void addFriend() {
+        HttpsUtil.sendPostRequest(HttpsUtil.addFriendAddr, getJsonDataForFriend(), new HttpsListener() {
+            @Override
+            public void onSuccess(final String response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        btAddFriend.setText("删除好友");
+                        isFriend = true;
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                Log.e(TAG, "beFriend/onFailure:" + exception.toString());
+            }
+        });
+    }
+
+    private void deleteFriend() {
+        HttpsUtil.sendPostRequest(HttpsUtil.deleteFriendAddr, getJsonDataForFriend(), new HttpsListener() {
+            @Override
+            public void onSuccess(final String response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        btAddFriend.setText("添加好友");
+                        isFriend = false;
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                Log.e(TAG, "deleteFriend/onFailure:" + exception.toString());
+            }
+        });
+    }
+
+    private JSONObject getJsonDataForFriend() {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("user_id", User.getAccount());
+            data.put("friend_id", account);
+        } catch (JSONException e) {
+            Log.e(TAG, "getJsonDataForFriend:" + e.toString());
         }
         return data;
     }

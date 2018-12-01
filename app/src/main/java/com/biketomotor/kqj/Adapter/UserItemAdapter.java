@@ -16,6 +16,11 @@ public class UserItemAdapter
         extends RecyclerView.Adapter<UserItemAdapter.ViewHolder> {
     private static final String TAG = "TagUserItemAdapter";
 
+    private int colorBlue;
+    private int colorGreen;
+    private int colorYellow;
+    private int colorRed;
+
     class ViewHolder
             extends RecyclerView.ViewHolder {
 
@@ -26,6 +31,10 @@ public class UserItemAdapter
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_user_name);
             tvStatus = itemView.findViewById(R.id.tv_user_status);
+            colorBlue = itemView.getResources().getColor(R.color.colorLightBlue);
+            colorGreen = itemView.getResources().getColor(R.color.colorGreen);
+            colorYellow = itemView.getResources().getColor(R.color.colorYellow);
+            colorRed = itemView.getResources().getColor(R.color.colorRed);
         }
     }
 
@@ -67,7 +76,16 @@ public class UserItemAdapter
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.tvName.setText(userItemList.get(position).getRealname() + "(" + userItemList.get(position).getNickname() + ")");
-//        holder.tvStatus.setText();
+        String status = userItemList.get(position).getStatus();
+        if (status.equals("1")) {
+            holder.tvStatus.setBackgroundColor(colorGreen);
+        } else if (status.equals("2")) {
+            holder.tvStatus.setBackgroundColor(colorYellow);
+        } else if (status.equals("3")) {
+            holder.tvStatus.setBackgroundColor(colorRed);
+        } else {
+            holder.tvStatus.setBackgroundColor(colorBlue);
+        }
         holder.itemView.setTag(position);
     }
 

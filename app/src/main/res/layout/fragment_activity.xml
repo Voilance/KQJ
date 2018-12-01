@@ -4,8 +4,87 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/ll0"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:id="@+id/tv_mcreate"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="我创建的活动"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_mparticipant"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="我参与的活动"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_msupervisor"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="我监督的活动"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_below="@id/ll0"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp">
+
+        <View
+            android:id="@+id/v_mcreate"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorLightBlue"
+            android:visibility="invisible"/>
+
+        <View
+            android:id="@+id/v_mparticipant"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorLightBlue"
+            android:visibility="invisible"/>
+
+        <View
+            android:id="@+id/v_msupervisor"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorLightBlue"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v0"
+        android:layout_below="@id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorCursor"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_activity_list"
+        android:layout_below="@id/v0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

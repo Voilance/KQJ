@@ -2,27 +2,17 @@ package com.biketomotor.kqj.Class;
 
 import android.support.annotation.NonNull;
 
-
-public class UserItem implements Comparable<UserItem> {
-
+public class FriendItem implements Comparable<FriendItem> {
     private String nickname; // 昵称
     private String realname; // 真实姓名
     private String account; // 学号
-    private String tel; // 电话
-    private String status;
-
-    public UserItem(String nickname, String realname, String account) {
+    private String msg;
+    
+    public FriendItem(String nickname, String realname, String account, String msg) {
         this.nickname = nickname;
         this.realname = realname;
         this.account = account;
-        this.tel = "No tel";
-    }
-
-    public UserItem(String nickname, String realname, String account, String status) {
-        this.nickname = nickname;
-        this.realname = realname;
-        this.account = account;
-        this.status = status;
+        this.msg = msg;
     }
 
     public String getNickname() {
@@ -49,24 +39,16 @@ public class UserItem implements Comparable<UserItem> {
         this.account = account;
     }
 
-    public String getTel() {
-        return tel;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     @Override
-    public int compareTo(@NonNull UserItem userItem) {
+    public int compareTo(@NonNull FriendItem o) {
         return 0;
     }
 }

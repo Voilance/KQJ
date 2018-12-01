@@ -35,7 +35,9 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     private TextView tvStartTime;
     private TextView tvEndDate;
     private TextView tvEndTime;
+    private EditText etSupervisor;
     private EditText etInfo;
+    private Button btSupervisor;
     private Button   btEdit;
     private Button btDelete;
 
@@ -50,6 +52,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     private String                             endTime;
     private String                             info;
     private String                             creater;
+    private String supervisor;
     private DatePickerDialog.OnDateSetListener onStartDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -92,6 +95,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(TAG, "onCreate");
         initView();
     }
 
@@ -107,6 +111,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         getTime();
         info = intent.getStringExtra("info");
         creater = intent.getStringExtra("creater");
+        supervisor = intent.getStringExtra("supervisor");
 
         findViewById(R.id.title_number).setVisibility(View.INVISIBLE);
         findViewById(R.id.title_task).setVisibility(View.INVISIBLE);
@@ -119,7 +124,9 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         tvStartTime = findViewById(R.id.tv_start_time);
         tvEndDate = findViewById(R.id.tv_end_date);
         tvEndTime = findViewById(R.id.tv_end_time);
+        etSupervisor = findViewById(R.id.et_supervisor);
         etInfo = findViewById(R.id.et_info);
+        btSupervisor = findViewById(R.id.bt_supervisor);
         btEdit = findViewById(R.id.bt_edit);
         btDelete = findViewById(R.id.bt_delete);
 
@@ -129,11 +136,14 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         tvStartTime.setText(startTime);
         tvEndDate.setText(endDate);
         tvEndTime.setText(endTime);
+        etSupervisor.setText(supervisor);
         etInfo.setText(info);
+
         tvStartDate.setOnClickListener(this);
         tvStartTime.setOnClickListener(this);
         tvEndTime.setOnClickListener(this);
         tvEndDate.setOnClickListener(this);
+        btSupervisor.setOnClickListener(this);
         btEdit.setOnClickListener(this);
         btDelete.setOnClickListener(this);
     }
@@ -172,6 +182,10 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                         Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
                         Calendar.getInstance().get(Calendar.MINUTE),
                         true).show();
+                break;
+            case R.id.bt_supervisor:
+                Log.e(TAG, "onClick");
+                onSetSupervisor();
                 break;
             case R.id.bt_edit:
                 if (isInfoValid()) {
@@ -222,6 +236,43 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
             info = "没有简介。";
         }
         return true;
+    }
+
+    private void onSetSupervisor() {
+        HttpsUtil.sendPostRequest(HttpsUtil.setSupervisorAddr, getJsonDataForSetSupervisor(), new HttpsListener() {
+            @Override
+            public void onSuccess(final String response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject data = new JSONObject(response);
+                            String reason = data.getString("reason");
+                            toast(reason);
+                        } catch (JSONException e) {
+                            Log.e(TAG, "onSetSupervisor/onSuccess:" + e.toString());
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                Log.e(TAG, "onSetSupervisor/onFailure: " + exception.toString());
+            }
+        });
+    }
+
+    private JSONObject getJsonDataForSetSupervisor() {
+        supervisor = etSupervisor.getText().toString().trim();
+        JSONObject data = new JSONObject();
+        try {
+            data.put("supervisor", supervisor);
+            data.put("activity_id", id);
+        } catch (JSONException e) {
+            Log.e(TAG, "getJsonDataForSetSupervisor:" + e.toString());
+        }
+        return data;
     }
 
     private void onEditActivity() {
@@ -339,7 +390,8 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
             String startTime,
             String endTime,
             String info,
-            String creater
+            String creater,
+            String visor
     ) {
         Intent intent = new Intent(context, EditActivity.class);
         intent.putExtra("id", id);
@@ -349,6 +401,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         intent.putExtra("endTime", endTime);
         intent.putExtra("info", info);
         intent.putExtra("creater", creater);
+        intent.putExtra("supervisor", visor);
         context.startActivity(intent);
     }
 }

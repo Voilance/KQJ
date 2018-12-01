@@ -144,9 +144,9 @@ public class MainActivity
 
     public void editTitleNumber(int number) {
         if (number > 0) {
-            tvTitleNumber.setText("待签(" + String.valueOf(number) +")");
+            tvTitleNumber.setText("活动(" + String.valueOf(number) +")");
         } else {
-            tvTitleNumber.setText("今日无签");
+            tvTitleNumber.setText("无活动");
         }
     }
 
@@ -199,6 +199,7 @@ public class MainActivity
     }
 
     public static void editView() {
+        FriendFragment.editView();
         CurriculumFragment.editView();
         SigninFragment.editView();
         ActivityFragment.editView();

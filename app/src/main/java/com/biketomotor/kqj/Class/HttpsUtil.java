@@ -13,8 +13,10 @@ public class HttpsUtil {
 
     public static final String loginAddr = "https://app.biketomotor.cn/api/UserSignIn";
     public static final String registerAddr = "https://app.biketomotor.cn/api/UserSignUp";
+    public static final String getAllActivityAddr = "https://app.biketomotor.cn/api/GetAllActivity";
     public static final String participantActivityAddr = "https://app.biketomotor.cn/api/GetParticipantActivity";
     public static final String createActivityAddr = "https://app.biketomotor.cn/api/CreateActivity";
+    public static final String setSupervisorAddr = "https://app.biketomotor.cn/api/SetSupervisor";
     public static final String activityInfoAddr = "https://app.biketomotor.cn/api/GetActivityDetails";
     public static final String urgentActivityAddr = "https://app.biketomotor.cn/api/UrgentActivity";
     public static final String activityPassedAddr = "https://app.biketomotor.cn/api/ActivityPassed";
@@ -24,12 +26,16 @@ public class HttpsUtil {
     public static final String deleteActivityAddr = "https://app.biketomotor.cn/api/DeleteActivity";
     public static final String userArriveAddr = "https://app.biketomotor.cn/api/UserArrived";
     public static final String userLeftAddr = "https://app.biketomotor.cn/api/UserLeft";
+    public static final String userClockInfoAddr = "https://app.biketomotor.cn/api/UserClockInInformation";
     public static final String getCourseAddr = "https://app.biketomotor.cn/course/GetCourseList";
     public static final String getAllCourseAddr = "https://app.biketomotor.cn/course/GetCourseAll";
     public static final String addCourseAddr = "https://app.biketomotor.cn/course/AddCourse";
     public static final String deleteCourseAddr = "https://app.biketomotor.cn/course/DeleteCourse";
     public static final String editCourseAddr = "https://app.biketomotor.cn/course/EditCourse";
     public static final String setCurWeekAddr = "https://app.biketomotor.cn/course/SetCurrentWeek";
+    public static final String getFriendListAddr = "https://app.biketomotor.cn/communication/GetFriendList";
+    public static final String addFriendAddr = "https://app.biketomotor.cn/communication/AddFriend";
+    public static final String deleteFriendAddr = "https://app.biketomotor.cn/communication/DeleteFriend";
 
     public static void sendPostRequest(
             final String address,
