@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/title_bar"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_app_icon"
+        android:layout_below="@id/title_bar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/app_icon"/>
+
+    <TextView
+        android:id="@+id/tv_app_name"
+        android:layout_below="@id/civ_app_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="智能课堂签到"
+        android:textSize="18sp"
+        android:textColor="@color/appTitle"
+        android:typeface="monospace"/>
+
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_below="@id/tv_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="V 1.0.0.1812"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:text="Made By BikeToMotor. All Rights Reserved."/>
+
+</RelativeLayout>

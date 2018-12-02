@@ -54,7 +54,9 @@
 
         <activity android:name=".Activity.EditActivity" />
         <activity android:name=".Activity.AddCourseActivity" />
-        <activity android:name=".Activity.EditCourse"></activity>
+        <activity android:name=".Activity.EditCourse" />
+        <activity android:name=".Activity.HistoryActivity" />
+        <activity android:name=".Activity.Version"></activity>
     </application>
 
 </manifest>

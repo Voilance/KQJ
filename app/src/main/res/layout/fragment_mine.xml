@@ -56,11 +56,51 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_setting"
+        android:id="@+id/rl_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_avatar"
         android:layout_marginTop="20dp"
+        android:background="#ffffff">
+
+        <ImageView
+            android:id="@+id/iv_history"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/ic_book_white"
+            android:background="#4d92c8"/>
+
+        <TextView
+            android:id="@+id/tv_history"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_history"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            android:text="历史活动"
+            android:textSize="20sp"
+            android:textColor="#000"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/v0"
+        android:layout_below="@id/rl_history"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/colorCursor"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_setting"
+        android:layout_below="@id/v0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="#ffffff">
 
         <ImageView

@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.biketomotor.kqj.Activity.HistoryActivity;
 import com.biketomotor.kqj.Activity.MainActivity;
 import com.biketomotor.kqj.Activity.SettingActivity;
 import com.biketomotor.kqj.Class.User;
@@ -23,6 +24,7 @@ public class MineFragment
     private RelativeLayout rlAvatar;
     private static TextView tvNickname;
     private static TextView tvAccount;
+    private RelativeLayout rlHistory;
     private RelativeLayout rlSetting;
 
     @Override
@@ -36,6 +38,8 @@ public class MineFragment
         tvAccount = view.findViewById(R.id.tv_account);
         rlSetting = view.findViewById(R.id.rl_setting);
         rlSetting.setOnClickListener(this);
+        rlHistory = view.findViewById(R.id.rl_history);
+        rlHistory.setOnClickListener(this);
 
         return view;
     }
@@ -46,6 +50,9 @@ public class MineFragment
         switch (v.getId()) {
             case R.id.rl_avatar:
                 Toast.makeText(getContext(), "avatar", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.rl_history:
+                HistoryActivity.actionActivity(mainActivity);
                 break;
             case R.id.rl_setting:
                 SettingActivity.actionActivity(mainActivity);

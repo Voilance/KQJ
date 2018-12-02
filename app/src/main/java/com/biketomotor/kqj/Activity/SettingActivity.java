@@ -16,6 +16,7 @@ public class SettingActivity
     private static final String TAG = "TagSetting";
 
     private TextView tvLogout;
+    private TextView tvVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,9 @@ public class SettingActivity
         tvTitleName.setText("设置");
 
         tvLogout = findViewById(R.id.tv_logout);
+        tvVersion = findViewById(R.id.tv_version);
         tvLogout.setOnClickListener(this);
+        tvVersion.setOnClickListener(this);
     }
 
     @Override
@@ -43,6 +46,9 @@ public class SettingActivity
                 Sys.setLogin(false);
                 Sys.writeSP(getSharedPreferences(Sys.SPName, Context.MODE_PRIVATE));
                 finish();
+                break;
+            case R.id.tv_version:
+                Version.actionActivity(SettingActivity.this);
                 break;
             default:
                 break;
