@@ -96,21 +96,15 @@ public class ActivityInfo
                     for (final String key : signMap.keySet()) {
                         long t = signMap.get(key);
                         if (curTime > (t + 30000)) { // 离开超过30s
-                            toast("send left");
                             HttpsUtil.sendPostRequest(HttpsUtil.userLeftAddr, getJsonDataForSign(key), null);
-                            toast("update status");
                             onUserStatus();
-                            toast("over");
                             signMap.remove(key);
                         }
                     }
                     if (signMap.get(m) == null) { // 新到同学
                         signMap.put(m, curTime);
-                        toast("send arrive");
                         HttpsUtil.sendPostRequest(HttpsUtil.userArriveAddr, getJsonDataForSign(m), null);
-                        toast("update status");
                         onUserStatus();
-                        toast("over");
                     } else {
                         signMap.put(m, curTime);
                     }
@@ -201,7 +195,11 @@ public class ActivityInfo
         userItemAdapter.setItemClickListener(new UserItemAdapter.onItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                UserInfo.actionActivity(ActivityInfo.this, userItemList.get(position).getAccount(), id, requestCode);
+                if (requestCode == 1) {
+                    UserInfo.actionActivity(ActivityInfo.this, userItemList.get(position).getAccount(), id, 2); // 创建者将用户移出活动
+                } else {
+                    UserInfo.actionActivity(ActivityInfo.this, userItemList.get(position).getAccount(), id, requestCode);
+                }
             }
 
             @Override

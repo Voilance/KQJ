@@ -14,6 +14,7 @@ public class HttpsUtil {
     public static final String loginAddr = "https://app.biketomotor.cn/api/UserSignIn";
     public static final String registerAddr = "https://app.biketomotor.cn/api/UserSignUp";
     public static final String getAllActivityAddr = "https://app.biketomotor.cn/api/GetAllActivity";
+    public static final String getAllHistoryActivityAddr = "https://app.biketomotor.cn/api/GetAllHistoryActivity";
     public static final String participantActivityAddr = "https://app.biketomotor.cn/api/GetParticipantActivity";
     public static final String createActivityAddr = "https://app.biketomotor.cn/api/CreateActivity";
     public static final String setSupervisorAddr = "https://app.biketomotor.cn/api/SetSupervisor";
@@ -21,6 +22,7 @@ public class HttpsUtil {
     public static final String urgentActivityAddr = "https://app.biketomotor.cn/api/UrgentActivity";
     public static final String activityPassedAddr = "https://app.biketomotor.cn/api/ActivityPassed";
     public static final String inviteUserAddr = "https://app.biketomotor.cn/api/InviteUser";
+    public static final String removeUserAddr = "https://app.biketomotor.cn/api/RemoveUser";
     public static final String getUserInfoAddr = "https://app.biketomotor.cn/api/GetUserInfo";
     public static final String editActivityAddr = "https://app.biketomotor.cn/api/EditActivity";
     public static final String deleteActivityAddr = "https://app.biketomotor.cn/api/DeleteActivity";

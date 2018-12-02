@@ -77,6 +77,9 @@ public class UserInfo
         // 从ActivityInfo跳转过来邀请用户加入活动
         if (requestCode == 1) {
             rlInvite.setVisibility(View.VISIBLE);
+        } else if (requestCode == 2) {
+            rlInvite.setVisibility(View.VISIBLE);
+            btInvite.setText("将其移出活动");
         }
 
         getUserInfo();
@@ -93,7 +96,11 @@ public class UserInfo
                 }
                 break;
             case R.id.bt_invite:
-                inviteUser();
+                if (requestCode == 1) {
+                    inviteUser();
+                } else if (requestCode == 2) {
+                    removeUser();
+                }
                 break;
             default:
                 break;
@@ -162,12 +169,12 @@ public class UserInfo
                     @Override
                     public void run() {
                         try {
-                            Log.e(TAG, response);
                             JSONObject data = new JSONObject(response);
                             String result = data.getString("result");
                             String reason = data.getString("reason");
                             if (result.equals("true")) {
-                                rlInvite.setVisibility(View.INVISIBLE);
+                                btInvite.setText("将其移出活动");
+                                requestCode = 2;
                                 toast("成功添加");
                             } else {
                                 toast(reason);
@@ -182,6 +189,35 @@ public class UserInfo
             @Override
             public void onFailure(Exception exception) {
                 Log.e(TAG, "inviteUser/OnFailure:" + exception.toString());
+            }
+        });
+    }
+
+    private void removeUser() {
+        HttpsUtil.sendPostRequest(HttpsUtil.removeUserAddr, getInviteJsonData(), new HttpsListener() {
+            @Override
+            public void onSuccess(final String response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject data = new JSONObject(response);
+                            String result = data.getString("result");
+                            if (result.equals("true")) {
+                                btInvite.setText("邀请加入活动");
+                                requestCode = 1;
+                                toast("成功移出");
+                            }
+                        } catch (JSONException e) {
+                            Log.e(TAG, "removeUser/onSuccess:" + e.toString());
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                Log.e(TAG, "removeUser/onFailure:" + exception.toString());
             }
         });
     }
