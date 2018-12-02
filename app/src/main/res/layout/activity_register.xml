@@ -247,7 +247,8 @@
                 android:hint="  输入密码"
                 android:textColorHint="@color/colorCursor"
                 android:textCursorDrawable="@color/colorCursor"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:password="true"/>
 
             <ImageView
                 android:id="@+id/iv_password_clear"
@@ -296,7 +297,8 @@
                 android:hint="  确认密码"
                 android:textColorHint="@color/colorCursor"
                 android:textCursorDrawable="@color/colorCursor"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:password="true"/>
 
             <ImageView
                 android:id="@+id/iv_confirm_clear"
